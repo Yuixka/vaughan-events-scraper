@@ -12,13 +12,12 @@
       "age_info": "Youth",
       "tags": [
         "community",
-        "outdoors",
         "education",
-        "youth"
+        "conservation"
       ],
-      "nature_reason": "Events involve outdoor education, hiking trails, conservation parks and stewardship activities.",
-      "teen_reason": "Tagged as Youth programs, safe and suitable for teenagers.",
-      "description": "Community events and outdoor education programs including hiking, exploring parks, stewardship, and youth council."
+      "nature_reason": "Events involve outdoor education, stewardship, and conservation activities.",
+      "teen_reason": "Events are suitable for youth and include educational and community involvement activities.",
+      "description": "Community events and programs at TRCA including outdoor education, stewardship, and conservation activities."
     }
   },
   {
@@ -35,12 +34,11 @@
       "tags": [
         "education",
         "nature",
-        "course",
-        "wildlife"
+        "course"
       ],
-      "nature_reason": "Course focuses on nature skills, ecology, and wildlife observation outdoors and online.",
-      "teen_reason": "Educational course suitable for learners including teens; no age restrictions noted.",
-      "description": "Blended learning course teaching naturalist skills such as species identification and ecological knowledge through hands-on and online modules."
+      "nature_reason": "Course involves outdoor and ecological education about nature.",
+      "teen_reason": "Suitable for budding naturalists including teens.",
+      "description": "Blended learning course teaching naturalist skills including species identification and ecological knowledge."
     }
   },
   {
@@ -57,12 +55,11 @@
       "tags": [
         "outdoors",
         "family",
-        "nature",
-        "adventure"
+        "nature"
       ],
-      "nature_reason": "All activities are nature-based outdoor skills and exploration.",
-      "teen_reason": "Designed for all ages including children and teens; family friendly and safe.",
-      "description": "Family outdoor adventure day including fire building, shelter building, pond dipping, orienteering, natural playscape, and trail walks."
+      "nature_reason": "Event includes multiple outdoor nature-based activities.",
+      "teen_reason": "Suitable for all ages including teens.",
+      "description": "Outdoor adventure day with activities including fire building, shelter building, pond dipping, orienteering, and trail walks."
     }
   }
 ]
