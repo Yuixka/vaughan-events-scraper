@@ -3,7 +3,7 @@
 # playwright install chromium
 # export OPENAI_API_KEY="YOUR_KEY"
 # python3 scrape_3sites_teens.py
-
+from dataclasses import dataclass, asdict
 import os, re, json
 from dataclasses import dataclass
 from typing import Optional, List, Dict, Any
