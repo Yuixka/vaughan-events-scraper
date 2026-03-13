@@ -639,6 +639,9 @@ def main():
                 uniq[k] = e
         all_raw = list(uniq.values())
         print("Total candidates:", len(all_raw))
+        with open("raw_candidates.json", "w", encoding="utf-8") as f:
+        json.dump([asdict(e) for e in all_raw], f, ensure_ascii=False, indent=2)
+        print("Saved raw_candidates.json:", len(all_raw))
 
         # Enrich top N
         ENRICH_N = min(80, len(all_raw))
