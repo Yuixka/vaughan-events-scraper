@@ -1,23 +1,281 @@
 [
   {
-    "title": "Community Events at TRCA",
+    "title": "Community Events",
     "start": null,
     "end": null,
     "url": "https://trca.ca/get-involved/events/",
     "extendedProps": {
-      "location": "on Climate Change Watershed Plans TRCA Infrastructure Projects Building Sustainabl",
+      "location": "Climate Change Watershed Plans TRCA Infrastructure Projects Building Sustainable Neighborhoods",
       "venue": null,
       "source": "trca.ca",
       "price": null,
       "age_info": "Youth",
       "tags": [
         "community",
+        "environment",
         "education",
-        "conservation"
+        "volunteering"
       ],
-      "nature_reason": "Events involve outdoor education, stewardship, and conservation activities.",
-      "teen_reason": "Events are suitable for youth and include educational and community involvement activities.",
-      "description": "Community events and programs at TRCA including outdoor education, stewardship, and conservation activities."
+      "nature_reason": "Includes outdoor education, conservation parks, stewardship programs and nature-based activities.",
+      "teen_reason": "Youth oriented programs, safe and educational.",
+      "description": "Various community and environmental events including outdoor education, stewardship programs, conservation activities."
+    }
+  },
+  {
+    "title": "Cold Creek Maple Syrup Fest 2026",
+    "start": "2026-03-14T10:00:00",
+    "end": "2026-03-14T14:00:00",
+    "url": "https://www.eventbrite.ca/e/cold-creek-maple-syrup-fest-2026-tickets-1981862488052?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Nobleton · Cold Creek Conservation Area",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "festival",
+        "maple",
+        "nature",
+        "family"
+      ],
+      "nature_reason": "Held in a conservation area with outdoor nature activities.",
+      "teen_reason": "Family friendly festival.",
+      "description": "Maple syrup festival held at Cold Creek Conservation Area celebrating syrup and nature."
+    }
+  },
+  {
+    "title": "Magical Markham Scavenger Hunt",
+    "start": null,
+    "end": null,
+    "url": "https://www.eventbrite.com/e/magical-markham-scavenger-hunt-tickets-1001557183497?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Markham · Tangy Cafe",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "scavenger",
+        "game",
+        "family",
+        "outdoor"
+      ],
+      "nature_reason": "Outdoor scavenger hunt.",
+      "teen_reason": "Family friendly event.",
+      "description": "Scavenger hunt event across Markham, starting at Tangy Cafe."
+    }
+  },
+  {
+    "title": "Garden Tune-Up: Winter Pruning Made Simple",
+    "start": "2026-03-14T10:00:00",
+    "end": "2026-03-14T12:00:00",
+    "url": "https://www.eventbrite.ca/e/garden-tune-up-winter-pruning-made-simple-tickets-1980404845203?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Toronto Botanical Garden",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$25",
+      "age_info": null,
+      "tags": [
+        "workshop",
+        "gardening",
+        "nature"
+      ],
+      "nature_reason": "Held at botanical garden with nature focus.",
+      "teen_reason": "Suitable educational workshop.",
+      "description": "Workshop on winter pruning at the Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "Kickstart Your Lawn",
+    "start": "2026-03-28T10:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/kickstart-your-lawn-tickets-1980666957187?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Toronto Botanical Garden",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$20",
+      "age_info": "all ages",
+      "tags": [
+        "workshop",
+        "gardening",
+        "nature"
+      ],
+      "nature_reason": "Educational gardening event in nature setting.",
+      "teen_reason": "All ages welcome.",
+      "description": "Learn how to improve your lawn care at the Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "Forest Bathing at the Garden",
+    "start": "2026-03-27T13:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/forest-bathing-at-the-garden-tickets-1980466844645?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Toronto Botanical Garden",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$35",
+      "age_info": null,
+      "tags": [
+        "forest",
+        "nature",
+        "wellness"
+      ],
+      "nature_reason": "Immersion in nature in forest surroundings.",
+      "teen_reason": "Wellness activity safe for teens.",
+      "description": "Guided forest bathing experience at Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "Clubfoot Walk 2026",
+    "start": "2026-05-09T11:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.com/e/clubfoot-walk-2026-tickets-1980128579886?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Orchard Pavilion",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$20",
+      "age_info": null,
+      "tags": [
+        "walk",
+        "fundraiser",
+        "community"
+      ],
+      "nature_reason": "Outdoor walk event.",
+      "teen_reason": "Family safe event.",
+      "description": "Fundraising walk event."
+    }
+  },
+  {
+    "title": "Barkham Festival 2026",
+    "start": "2026-06-13T11:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/barkham-festival-2026-tickets-1968325176589?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Markham · Markham Museum",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$5",
+      "age_info": "Youth",
+      "tags": [
+        "festival",
+        "dogs",
+        "family",
+        "outdoor"
+      ],
+      "nature_reason": "Held outdoors at a museum with animals and nature-related activities.",
+      "teen_reason": "Youth friendly event.",
+      "description": "Festival at Markham Museum featuring dogs and family-friendly activities."
+    }
+  },
+  {
+    "title": "Family Fun Sundays | Bruce's Mill Conservation Area",
+    "start": "2026-05-31T09:30:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/family-fun-sundays-bruces-mill-conservation-area-tickets-1977618706788?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Stouffville · Bruce's Mill Conservation Area",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "family",
+        "outdoor",
+        "nature"
+      ],
+      "nature_reason": "Held at conservation area with outdoor nature programs.",
+      "teen_reason": "Family oriented event.",
+      "description": "Family activities at Bruce's Mill Conservation Area."
+    }
+  },
+  {
+    "title": "Flower Art Series: Make Your Own Flower Press and Floral Art",
+    "start": "2026-07-18T14:00:00",
+    "end": "2026-08-08T16:00:00",
+    "url": "https://www.eventbrite.ca/e/flower-art-series-make-your-own-flower-press-and-floral-art-tickets-1980012079430?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Whitchurch-Stouffville · Bruce's Mill Conservation Park",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$38.61",
+      "age_info": "all ages",
+      "tags": [
+        "workshop",
+        "flower",
+        "nature",
+        "family"
+      ],
+      "nature_reason": "Held in a conservation park with nature theme.",
+      "teen_reason": "Suitable for all ages.",
+      "description": "Flower pressing and floral art workshop series at Bruce's Mill Conservation Park."
+    }
+  },
+  {
+    "title": "2026 Indigenous Hockey Equipment Drive Golf Tournament",
+    "start": "2026-07-15T08:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/2026-indigenous-hockey-equipment-drive-golf-tournament-tickets-1981584776409?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Richmond Hill · Richmond Hill Golf Club",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$285",
+      "age_info": null,
+      "tags": [
+        "golf",
+        "fundraiser",
+        "sports"
+      ],
+      "nature_reason": "Outdoor golf event.",
+      "teen_reason": "Safe sporting fundraiser.",
+      "description": "Golf tournament to support indigenous hockey equipment drive."
+    }
+  },
+  {
+    "title": "#ExperienceTO: Riverdale Historical Tour",
+    "start": "2026-03-28T10:00:00",
+    "end": "2026-03-28T11:30:00",
+    "url": "https://www.eventbrite.ca/e/experienceto-riverdale-historical-tour-tickets-1599207405399?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Toronto Public Library - Riverdale Branch",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "free",
+      "age_info": null,
+      "tags": [
+        "tour",
+        "walking",
+        "history",
+        "outdoor"
+      ],
+      "nature_reason": "Outdoor walking tour.",
+      "teen_reason": "Suitable for general audiences.",
+      "description": "Historical walking tour in Riverdale, Toronto."
+    }
+  },
+  {
+    "title": "Rooted & Reaching: Art Therapy at The Garden",
+    "start": "2026-03-31T10:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/rooted-reaching-art-therapy-at-the-garden-tickets-1982356421420?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto · Toronto Botanical Garden",
+      "venue": null,
+      "source": "eventbrite.ca",
+      "price": "$15",
+      "age_info": null,
+      "tags": [
+        "therapy",
+        "art",
+        "garden"
+      ],
+      "nature_reason": "Held at botanical garden.",
+      "teen_reason": "Suitable therapy program.",
+      "description": "Art therapy sessions held at Toronto Botanical Garden."
     }
   },
   {
@@ -26,19 +284,21 @@
     "end": "2026-04-12T20:00:00",
     "url": "https://calendar.trca.ca/event/ontario-naturalist-level-1-course/",
     "extendedProps": {
-      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario, Vaughan, L4H 4Z2",
       "venue": null,
       "source": "visitvaughan.ca",
       "price": "$600",
       "age_info": null,
       "tags": [
+        "course",
+        "naturalist",
         "education",
-        "nature",
-        "course"
+        "wildlife",
+        "ecology"
       ],
-      "nature_reason": "Course involves outdoor and ecological education about nature.",
-      "teen_reason": "Suitable for budding naturalists including teens.",
-      "description": "Blended learning course teaching naturalist skills including species identification and ecological knowledge."
+      "nature_reason": "Course involves outdoor and nature-based education focused on local flora and fauna.",
+      "teen_reason": "Educational course suitable for teenagers interested in nature.",
+      "description": "Blended learning course for budding or amateur naturalists featuring in-class and online modules on species identification, ecology, and natural history of Southern Ontario."
     }
   },
   {
@@ -47,7 +307,7 @@
     "end": "2026-06-21T15:00:00",
     "url": "https://calendar.trca.ca/event/fathers-day-at-kortright/",
     "extendedProps": {
-      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario, Vaughan, L4H 4Z2",
       "venue": null,
       "source": "visitvaughan.ca",
       "price": "$8.40",
@@ -55,11 +315,13 @@
       "tags": [
         "outdoors",
         "family",
-        "nature"
+        "adventure",
+        "nature",
+        "learning"
       ],
-      "nature_reason": "Event includes multiple outdoor nature-based activities.",
-      "teen_reason": "Suitable for all ages including teens.",
-      "description": "Outdoor adventure day with activities including fire building, shelter building, pond dipping, orienteering, and trail walks."
+      "nature_reason": "Outdoor nature activities and learning about wildlife and survival skills.",
+      "teen_reason": "Family-friendly event suitable for all ages including teens.",
+      "description": "Family outdoor adventure day with activities including fire building, shelter building, pond dipping, orienteering, natural playscape, trail walks and picnic opportunity at Kortright Centre."
     }
   }
 ]
