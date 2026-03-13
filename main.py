@@ -3,9 +3,9 @@
 # playwright install chromium
 # export OPENAI_API_KEY="YOUR_KEY"
 # python3 scrape_3sites_teens.py
-from dataclasses import dataclass, asdict
+
 import os, re, json
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Optional, List, Dict, Any
 from urllib.parse import urlparse, urljoin
 from dateutil import parser as dtparser
@@ -21,6 +21,9 @@ SITES = [
     "https://trca.ca/events-calendar/",
     "https://www.eventbrite.ca/d/canada--york/outdoor-events/",
     "https://visitvaughan.ca/calendar/2026/04/01/",
+    "https://childslife.ca/events/category/kids-programs-and-workshops/nature-wildlife-programs/",
+    "https://kortright.org/whats-on/calendar/",
+    "https://www.evergreen.ca/evergreen-brick-works/whats-on/",
 ]
 
 OUT_JSON = "nature_teens_events.json"
@@ -89,7 +92,6 @@ def safe_abs(base: str, href: str) -> str:
     return urljoin(base, href)
 
 def try_parse_datetime(date_text: Optional[str], time_text: Optional[str]) -> Optional[str]:
-    """Best-effort: join date + time; if only date exists, output YYYY-MM-DD."""
     d = norm_ws(date_text)
     t = norm_ws(time_text)
     if not d and not t:
@@ -97,13 +99,10 @@ def try_parse_datetime(date_text: Optional[str], time_text: Optional[str]) -> Op
     joined = " ".join([x for x in [d, t] if x])
     try:
         dt = dtparser.parse(joined, fuzzy=True)
-        # If we only had a date (no time string and parsed time looks default-ish),
-        # output ISO date (FullCalendar accepts YYYY-MM-DD).
         if d and not t:
             return dt.date().isoformat()
         return dt.isoformat(timespec="minutes")
     except Exception:
-        # fallback: if looks like a date, keep normalized date-ish
         if d:
             try:
                 dt = dtparser.parse(d, fuzzy=True)
@@ -145,7 +144,6 @@ def scroll_to_bottom_until_stable(page, max_rounds: int = 10, pause_ms: int = 65
             last_h = h
 
 def try_accept_cookies(page):
-    # Aggressive but safe: click common consent buttons if present.
     click_if_exists(page, [
         "button:has-text('Accept all')",
         "button:has-text('Accept All')",
@@ -192,7 +190,6 @@ def scrape_trca(page, url: str, max_clicks: int = 20) -> List[RawEvent]:
 
         abs_url = safe_abs(url, href)
 
-        # climb a few parents to get card text
         card = a
         for _ in range(6):
             if getattr(card, "parent", None):
@@ -428,6 +425,249 @@ def scrape_visitvaughan(page, url: str, months_forward: int = 3) -> List[RawEven
     return list(uniq.values())[:400]
 
 # -------------------------
+# Site D: Child's Life
+# -------------------------
+def scrape_childslife(page, url: str) -> List[RawEvent]:
+    goto(page, url)
+    page.wait_for_timeout(900)
+    try_accept_cookies(page)
+    scroll_to_bottom_until_stable(page, max_rounds=5, pause_ms=700)
+
+    soup = BeautifulSoup(page.content(), "lxml")
+    events: List[RawEvent] = []
+
+    for art in soup.select("article, .tribe-events-calendar-list__event-row, .type-tribe_events, .tribe-common-g-row"):
+        a = art.select_one("h3 a, h2 a, h4 a, a[href*='/event/'], a[href*='/events/']")
+        if not a:
+            continue
+
+        title = norm_ws(a.get_text(" "))
+        href = a.get("href") or ""
+        if not title or len(title) < 6:
+            continue
+
+        block = norm_ws(art.get_text(" ")) or ""
+        when_text = None
+        time_text = None
+        location_text = None
+        price_text = None
+        age_text = None
+
+        m = re.search(
+            r"((?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun)[^|•\n]{0,120})",
+            block,
+            re.I
+        )
+        if m:
+            when_text = m.group(1)
+
+        tm = re.search(r"(\b\d{1,2}(?::\d{2})?\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}(?::\d{2})?\s?(?:AM|PM))?)", block, re.I)
+        if tm:
+            time_text = tm.group(1)
+
+        lm = re.search(r"([A-Z][^|•\n]{0,100}(?:Vaughan|Woodbridge|Toronto|Rexdale|Midland|Ontario|ON|Canada)[^|•\n]{0,100})", block, re.I)
+        if lm:
+            location_text = norm_ws(lm.group(1))
+
+        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
+        if pm:
+            price_text = pm.group(1)
+
+        am = re.search(r"(Ages?\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\+|All ages|Family friendly|Teens?)", block, re.I)
+        if am:
+            age_text = am.group(1)
+
+        events.append(RawEvent(
+            source=host(url),
+            title=title[:160],
+            url=safe_abs(url, href),
+            when_text=norm_ws(when_text),
+            time_text=norm_ws(time_text),
+            location_text=norm_ws(location_text),
+            price_text=norm_ws(price_text),
+            age_text=norm_ws(age_text),
+            description_text=block[:1400],
+        ))
+
+    uniq: Dict[tuple, RawEvent] = {}
+    for e in events:
+        k = (e.title.lower(), (e.url or "").lower())
+        if k not in uniq:
+            uniq[k] = e
+    return list(uniq.values())[:250]
+
+# -------------------------
+# Site E: Kortright
+# -------------------------
+def scrape_kortright(page, url: str, max_clicks: int = 8) -> List[RawEvent]:
+    goto(page, url)
+    page.wait_for_timeout(1000)
+    try_accept_cookies(page)
+
+    for _ in range(max_clicks):
+        scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=700)
+        clicked = click_if_exists(page, [
+            "button:has-text('Load More')",
+            "button:has-text('Load more')",
+            "a:has-text('Load More')",
+            "a:has-text('Load more')",
+        ], timeout_ms=1800)
+        if not clicked:
+            break
+        page.wait_for_timeout(1000)
+
+    soup = BeautifulSoup(page.content(), "lxml")
+    events: List[RawEvent] = []
+
+    for a in soup.select("a[href*='/event/'], a[href*='/events/'], a[href*='/program/'], a[href*='/family-programs/'], a[href*='/adult-programs/'], a[href*='/camps/']"):
+        title = norm_ws(a.get_text(" "))
+        href = a.get("href") or ""
+        if not title or len(title) < 6:
+            continue
+
+        abs_url = safe_abs(url, href)
+
+        card = a
+        for _ in range(7):
+            if getattr(card, "parent", None):
+                card = card.parent
+
+        block = norm_ws(card.get_text(" ")) or ""
+        if len(block) < 20:
+            continue
+        block = block[:1400]
+
+        when_text = None
+        time_text = None
+        location_text = None
+        price_text = None
+
+        m = re.search(r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,60}\d{1,2}(?:[^0-9]{0,12}\d{4})?)", block, re.I)
+        if m:
+            when_text = m.group(1)
+
+        tm = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}:\d{2}\s?(?:AM|PM))?)", block, re.I)
+        if tm:
+            time_text = tm.group(1)
+
+        lm = re.search(r"(Kortright Centre[^|•\n]{0,100}|9550 Pine Valley Drive[^|•\n]{0,100}|Woodbridge[^|•\n]{0,100}|Vaughan[^|•\n]{0,100})", block, re.I)
+        if lm:
+            location_text = norm_ws(lm.group(1))
+
+        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
+        if pm:
+            price_text = pm.group(1)
+
+        events.append(RawEvent(
+            source=host(url),
+            title=title[:160],
+            url=abs_url,
+            when_text=norm_ws(when_text),
+            time_text=norm_ws(time_text),
+            location_text=norm_ws(location_text),
+            price_text=norm_ws(price_text),
+            description_text=block,
+        ))
+
+    uniq: Dict[tuple, RawEvent] = {}
+    for e in events:
+        k = (e.title.lower(), (e.url or "").lower())
+        if k not in uniq:
+            uniq[k] = e
+    return list(uniq.values())[:250]
+
+# -------------------------
+# Site F: Evergreen
+# -------------------------
+def scrape_evergreen(page, url: str, max_clicks: int = 8) -> List[RawEvent]:
+    goto(page, url)
+    page.wait_for_timeout(1000)
+    try_accept_cookies(page)
+
+    for _ in range(max_clicks):
+        scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=700)
+        clicked = click_if_exists(page, [
+            "button:has-text('Load More')",
+            "button:has-text('Load more')",
+            "a:has-text('Load More')",
+            "a:has-text('Load more')",
+            "button:has-text('Show More')",
+        ], timeout_ms=1800)
+        if not clicked:
+            break
+        page.wait_for_timeout(1000)
+
+    soup = BeautifulSoup(page.content(), "lxml")
+    events: List[RawEvent] = []
+
+    for a in soup.select("a[href*='/whats-on/'], a[href*='/event/'], article a, section a"):
+        title = norm_ws(a.get_text(" "))
+        href = a.get("href") or ""
+        if not title or len(title) < 6:
+            continue
+
+        abs_url = safe_abs(url, href)
+
+        card = a
+        for _ in range(8):
+            if getattr(card, "parent", None):
+                card = card.parent
+
+        block = norm_ws(card.get_text(" ")) or ""
+        if len(block) < 20:
+            continue
+        block = block[:1400]
+
+        when_text = None
+        time_text = None
+        location_text = None
+        price_text = None
+        age_text = None
+
+        m = re.search(
+            r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,60}\d{1,2}(?:[^0-9]{0,12}\d{4})?|Every Saturday 9am-1pm|Weekdays from 4pm to dusk, weekends 8am to dusk|Visit page for dates and times|Saturdays and by request|All of April 2026|Weekends throughout September|Mondays to Fridays from October to June|Fall season: Oct - Dec)",
+            block,
+            re.I
+        )
+        if m:
+            when_text = m.group(1)
+
+        tm = re.search(r"(\b\d{1,2}(?::\d{2})?\s?(?:AM|PM|am|pm)\b(?:\s?[-–]\s?\d{1,2}(?::\d{2})?\s?(?:AM|PM|am|pm))?)", block, re.I)
+        if tm:
+            time_text = tm.group(1)
+
+        lm = re.search(r"(Evergreen Brick Works[^|•\n]{0,100}|Toronto[^|•\n]{0,100}|Bayview[^|•\n]{0,100})", block, re.I)
+        if lm:
+            location_text = norm_ws(lm.group(1))
+
+        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
+        if pm:
+            price_text = pm.group(1)
+
+        am = re.search(r"(children aged\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\+|All ages welcome|kids|children|youth|teens?)", block, re.I)
+        if am:
+            age_text = am.group(1)
+
+        events.append(RawEvent(
+            source=host(url),
+            title=title[:160],
+            url=abs_url,
+            when_text=norm_ws(when_text),
+            time_text=norm_ws(time_text),
+            location_text=norm_ws(location_text),
+            price_text=norm_ws(price_text),
+            age_text=norm_ws(age_text),
+            description_text=block,
+        ))
+
+    uniq: Dict[tuple, RawEvent] = {}
+    for e in events:
+        k = (e.title.lower(), (e.url or "").lower())
+        if k not in uniq:
+            uniq[k] = e
+    return list(uniq.values())[:250]
+
+# -------------------------
 # Optional: Enrich by opening event detail pages
 # -------------------------
 def enrich_details(page, raw: RawEvent, timeout_ms: int = 45000) -> RawEvent:
@@ -622,6 +862,12 @@ def main():
                     raw = scrape_eventbrite(page, url)
                 elif "visitvaughan.ca" in url:
                     raw = scrape_visitvaughan(page, url, months_forward=3)
+                elif "childslife.ca" in url:
+                    raw = scrape_childslife(page, url)
+                elif "kortright.org" in url:
+                    raw = scrape_kortright(page, url)
+                elif "evergreen.ca" in url:
+                    raw = scrape_evergreen(page, url)
                 else:
                     raw = []
                 print("  candidates:", len(raw))
@@ -631,7 +877,6 @@ def main():
             except Exception as ex:
                 print("  FAILED:", ex)
 
-        # Light de-dupe
         uniq: Dict[tuple, RawEvent] = {}
         for e in all_raw:
             k = (e.source, e.title.lower(), (e.url or "").lower())
@@ -639,18 +884,17 @@ def main():
                 uniq[k] = e
         all_raw = list(uniq.values())
         print("Total candidates:", len(all_raw))
+
         with open("raw_candidates.json", "w", encoding="utf-8") as f:
             json.dump([asdict(e) for e in all_raw], f, ensure_ascii=False, indent=2)
         print("Saved raw_candidates.json:", len(all_raw))
 
-        # Enrich top N
         ENRICH_N = min(80, len(all_raw))
         for i in range(ENRICH_N):
             all_raw[i] = enrich_details(page, all_raw[i])
 
         browser.close()
 
-    # AI normalize/classify in batches
     normalized: List[NormalizedEvent] = []
     BATCH = 25
     for i in range(0, len(all_raw), BATCH):
@@ -658,12 +902,8 @@ def main():
         normed = ai_normalize_and_filter(chunk)
         normalized.extend(normed)
 
-    # Filter: nature + teen ok
     final = [e for e in normalized if e.nature_based and e.teen_ok_13_17]
 
-    # If model didn't fill start, do a last-resort parse from raw text (won't break anything)
-    # NOTE: This is safe because FullCalendar accepts YYYY-MM-DD too.
-    # (We only apply if start is missing.)
     if not final:
         print("Warning: 0 final events after filtering. (Could be overly strict or site blocking.)")
 
