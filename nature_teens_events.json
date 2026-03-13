@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Community Events at TRCA",
+    "start": null,
+    "end": null,
+    "url": "https://trca.ca/get-involved/events/",
+    "extendedProps": {
+      "location": "on Climate Change Watershed Plans TRCA Infrastructure Projects Building Sustainabl",
+      "venue": null,
+      "source": "trca.ca",
+      "price": null,
+      "age_info": "Youth",
+      "tags": [
+        "community",
+        "outdoors",
+        "education",
+        "youth"
+      ],
+      "nature_reason": "Events involve outdoor education, hiking trails, conservation parks and stewardship activities.",
+      "teen_reason": "Tagged as Youth programs, safe and suitable for teenagers.",
+      "description": "Community events and outdoor education programs including hiking, exploring parks, stewardship, and youth council."
+    }
+  },
+  {
+    "title": "Ontario Naturalist Level 1 Course",
+    "start": "2026-04-12T12:00:00",
+    "end": "2026-04-12T20:00:00",
+    "url": "https://calendar.trca.ca/event/ontario-naturalist-level-1-course/",
+    "extendedProps": {
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "venue": null,
+      "source": "visitvaughan.ca",
+      "price": "$600",
+      "age_info": null,
+      "tags": [
+        "education",
+        "nature",
+        "course",
+        "wildlife"
+      ],
+      "nature_reason": "Course focuses on nature skills, ecology, and wildlife observation outdoors and online.",
+      "teen_reason": "Educational course suitable for learners including teens; no age restrictions noted.",
+      "description": "Blended learning course teaching naturalist skills such as species identification and ecological knowledge through hands-on and online modules."
+    }
+  },
+  {
+    "title": "Father’s Day at Kortright",
+    "start": "2026-06-21T10:00:00",
+    "end": "2026-06-21T15:00:00",
+    "url": "https://calendar.trca.ca/event/fathers-day-at-kortright/",
+    "extendedProps": {
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "venue": null,
+      "source": "visitvaughan.ca",
+      "price": "$8.40",
+      "age_info": "all ages",
+      "tags": [
+        "outdoors",
+        "family",
+        "nature",
+        "adventure"
+      ],
+      "nature_reason": "All activities are nature-based outdoor skills and exploration.",
+      "teen_reason": "Designed for all ages including children and teens; family friendly and safe.",
+      "description": "Family outdoor adventure day including fire building, shelter building, pond dipping, orienteering, natural playscape, and trail walks."
+    }
+  }
+]
