@@ -605,7 +605,7 @@ def main():
     all_raw: List[RawEvent] = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         context = browser.new_context(
             user_agent=COMMON_UA,
             viewport={"width": 1280, "height": 800},
