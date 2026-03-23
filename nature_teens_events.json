@@ -1,6 +1,6 @@
 [
   {
-    "title": "Community Events at TRCA",
+    "title": "Community Events",
     "start": null,
     "end": null,
     "url": "https://trca.ca/get-involved/events/",
@@ -12,14 +12,267 @@
       "age_info": "Youth",
       "tags": [
         "community",
-        "conservation",
-        "outdoors",
+        "nature",
         "education",
-        "volunteering"
+        "youth"
       ],
-      "nature_reason": "Events focus on parks, ecology, watershed and outdoor education.",
-      "teen_reason": "Events are community and education oriented, suitable for youth.",
-      "description": "Various community events related to parks, conservation, watershed management, outdoor education, and stewardship programs organized by TRCA."
+      "nature_reason": "Events involve outdoor parks, conservation areas, and education about ecosystems.",
+      "teen_reason": "Events are community and youth oriented, suitable for ages 13–17.",
+      "description": "Community and nature-related events by Toronto and Region Conservation Authority including outdoor education, conservation parks, stewardship and youth programs."
+    }
+  },
+  {
+    "title": "Kickstart Your Lawn",
+    "start": "2026-03-28T10:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/kickstart-your-lawn-tickets-1980666957187?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Toronto Botanical Garden",
+      "source": "eventbrite.ca",
+      "price": "$20",
+      "age_info": "all ages",
+      "tags": [
+        "gardening",
+        "workshop",
+        "lawn"
+      ],
+      "nature_reason": "Event held outdoors in botanical garden with gardening education.",
+      "teen_reason": "Suitable for all ages including teens.",
+      "description": "Gardening workshop focused on lawn care at Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "Clubfoot Walk 2026",
+    "start": "2026-05-09T11:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.com/e/clubfoot-walk-2026-tickets-1980128579886?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Orchard Pavilion",
+      "source": "eventbrite.ca",
+      "price": "$20",
+      "age_info": null,
+      "tags": [
+        "charity",
+        "walk",
+        "health"
+      ],
+      "nature_reason": "Outdoor walking event.",
+      "teen_reason": "Family-friendly charity event with no adult restrictions.",
+      "description": "Charity walk event to support clubfoot cause."
+    }
+  },
+  {
+    "title": "Forest Bathing at the Garden",
+    "start": "2026-03-27T13:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/forest-bathing-at-the-garden-tickets-1980466844645?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Toronto Botanical Garden",
+      "source": "eventbrite.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "forest",
+        "wellness",
+        "outdoors"
+      ],
+      "nature_reason": "Outdoor guided nature immersion activity in botanical garden.",
+      "teen_reason": "Wellness event suitable for teens.",
+      "description": "Guided forest bathing experience at Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "Barkham Festival 2026",
+    "start": "2026-06-13T11:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/barkham-festival-2026-tickets-1968325176589?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Markham",
+      "venue": "Markham Museum",
+      "source": "eventbrite.ca",
+      "price": "$5",
+      "age_info": "Youth",
+      "tags": [
+        "dogs",
+        "festival",
+        "family"
+      ],
+      "nature_reason": "Outdoor festival at conservation area involving animals.",
+      "teen_reason": "Youth friendly festival.",
+      "description": "Festival celebrating dogs and dog lovers."
+    }
+  },
+  {
+    "title": "Family Fun Sundays | Bruce's Mill Conservation Area",
+    "start": "2026-05-31T09:30:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/family-fun-sundays-bruces-mill-conservation-area-tickets-1977618706788?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Stouffville",
+      "venue": "Bruce's Mill Conservation Area",
+      "source": "eventbrite.ca",
+      "price": "$16.25",
+      "age_info": null,
+      "tags": [
+        "family",
+        "nature",
+        "conservation"
+      ],
+      "nature_reason": "Held at conservation area focusing on nature activities.",
+      "teen_reason": "Family friendly events suitable for teens.",
+      "description": "Family nature activities held every Sunday at Bruce's Mill Conservation Area."
+    }
+  },
+  {
+    "title": "Flower Art Series: Make Your Own Flower Press and Floral Art",
+    "start": "2026-07-18T14:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/flower-art-series-make-your-own-flower-press-and-floral-art-tickets-1980012079430?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Whitchurch-Stouffville",
+      "venue": "Bruce's Mill Conservation Park",
+      "source": "eventbrite.ca",
+      "price": "$43.63",
+      "age_info": "all ages",
+      "tags": [
+        "art",
+        "flowers",
+        "workshop"
+      ],
+      "nature_reason": "Event in conservation park involving flowers and nature art.",
+      "teen_reason": "Suitable for all ages including teens.",
+      "description": "Art workshop to create flower presses and floral art."
+    }
+  },
+  {
+    "title": "2026 Indigenous Hockey Equipment Drive Golf Tournament",
+    "start": "2026-07-15T08:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/2026-indigenous-hockey-equipment-drive-golf-tournament-tickets-1981584776409?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Richmond Hill",
+      "venue": "Richmond Hill Golf Club",
+      "source": "eventbrite.ca",
+      "price": "$285",
+      "age_info": null,
+      "tags": [
+        "golf",
+        "charity",
+        "sports"
+      ],
+      "nature_reason": "Outdoor golf event at a golf club.",
+      "teen_reason": "Charity sports event without adult restrictions.",
+      "description": "Golf tournament supporting Indigenous hockey equipment drive."
+    }
+  },
+  {
+    "title": "#ExperienceTO: Riverdale Historical Tour",
+    "start": "2026-03-28T10:00:00",
+    "end": "2026-03-28T11:30:00",
+    "url": "https://www.eventbrite.ca/e/experienceto-riverdale-historical-tour-tickets-1599207405399?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Toronto Public Library - Riverdale Branch",
+      "source": "eventbrite.ca",
+      "price": "free",
+      "age_info": null,
+      "tags": [
+        "tour",
+        "history",
+        "walking"
+      ],
+      "nature_reason": "Outdoor walking tour.",
+      "teen_reason": "Educational and safe for teens.",
+      "description": "Historical walking tour of Riverdale neighborhood."
+    }
+  },
+  {
+    "title": "Rooted & Reaching: Art Therapy at The Garden",
+    "start": "2026-03-31T10:00:00",
+    "end": null,
+    "url": "https://www.eventbrite.ca/e/rooted-reaching-art-therapy-at-the-garden-tickets-1982356421420?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Toronto Botanical Garden",
+      "source": "eventbrite.ca",
+      "price": "$15",
+      "age_info": null,
+      "tags": [
+        "art",
+        "therapy",
+        "garden"
+      ],
+      "nature_reason": "Therapy sessions held outdoors in botanical garden.",
+      "teen_reason": "Suitable for teens without adult restrictions.",
+      "description": "Art therapy sessions held at Toronto Botanical Garden."
+    }
+  },
+  {
+    "title": "#ExperienceTO: Cabbagetown Historical Tour",
+    "start": "2026-04-18T10:00:00",
+    "end": "2026-04-18T11:30:00",
+    "url": "https://www.eventbrite.ca/e/experienceto-cabbagetown-historical-tour-tickets-1599230143409?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": "Toronto Public Library - Parliament Street Branch",
+      "source": "eventbrite.ca",
+      "price": "free",
+      "age_info": null,
+      "tags": [
+        "tour",
+        "history",
+        "walking"
+      ],
+      "nature_reason": "Outdoor walking tour.",
+      "teen_reason": "Safe and educational for teens.",
+      "description": "Historical walking tour of Cabbagetown neighborhood."
+    }
+  },
+  {
+    "title": "Swing into Spring",
+    "start": "2026-04-25T10:00:00",
+    "end": "2026-04-25T14:00:00",
+    "url": "https://www.eventbrite.ca/e/swing-into-spring-tickets-1982198494055?aff=ebdssbdestsearch",
+    "extendedProps": {
+      "location": "Ashburn",
+      "venue": "WindReach Farm",
+      "source": "eventbrite.ca",
+      "price": "$30",
+      "age_info": null,
+      "tags": [
+        "spring",
+        "festival",
+        "farm"
+      ],
+      "nature_reason": "Event at farm location, outdoors.",
+      "teen_reason": "Social event suitable for teens.",
+      "description": "Spring social event at a farm venue."
+    }
+  },
+  {
+    "title": "Artful Yoga at the McMichael",
+    "start": "2026-04-04T09:00:00",
+    "end": "2026-05-30T10:00:00",
+    "url": "https://mcmichael.com/event/artful-yoga-at-the-mcmichael-2025-11-22/2026-01-10/",
+    "extendedProps": {
+      "location": "10365 Islington Avenue, Kleinburg, Ontario, Vaughan, Ontario L0J 1C0",
+      "venue": "Gallery 8",
+      "source": "visitvaughan.ca",
+      "price": "$40",
+      "age_info": "16 and over",
+      "tags": [
+        "yoga",
+        "wellness",
+        "mindfulness",
+        "indoor",
+        "health"
+      ],
+      "nature_reason": "Outdoors scenic location overlooking river valley, yoga connects with nature ambience.",
+      "teen_reason": "Open to participants aged 16 and over; health and wellness activity safe for teens.",
+      "description": "Restorative morning yoga sessions with views over the Humber River Valley. Open to all skill levels. Series of Saturday classes."
     }
   },
   {
@@ -28,21 +281,21 @@
     "end": "2026-04-12T20:00:00",
     "url": "https://calendar.trca.ca/event/ontario-naturalist-level-1-course/",
     "extendedProps": {
-      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario L4H 4Z2",
       "venue": null,
       "source": "visitvaughan.ca",
       "price": "$600",
       "age_info": null,
       "tags": [
-        "education",
-        "nature",
         "naturalist",
-        "course",
-        "outdoors"
+        "education",
+        "outdoors",
+        "ecology",
+        "wildlife"
       ],
-      "nature_reason": "Involves learning about species and ecosystems in an outdoor context.",
-      "teen_reason": "Educational course suitable for amateur naturalists of various ages.",
-      "description": "Blended learning course covering naturalist skills such as species ID, ecological significance, and tracking taught by experts."
+      "nature_reason": "Course focused on nature education and field skills outdoors.",
+      "teen_reason": "Education course suitable for youth and adults; no adult-only content.",
+      "description": "Blended learning course teaching naturalist skills including species identification and ecological knowledge."
     }
   },
   {
@@ -51,72 +304,164 @@
     "end": "2026-06-21T15:00:00",
     "url": "https://calendar.trca.ca/event/fathers-day-at-kortright/",
     "extendedProps": {
-      "location": "9550 Pine Valley Drive, Woodbridge, Ontario",
+      "location": "9550 Pine Valley Drive, Woodbridge, Ontario L4H 4Z2",
       "venue": null,
       "source": "visitvaughan.ca",
       "price": "$8.40",
       "age_info": "all ages",
       "tags": [
-        "family",
         "outdoors",
+        "family",
+        "adventure",
         "nature",
-        "education",
-        "recreation"
+        "education"
       ],
-      "nature_reason": "Event centers on outdoor and nature activities.",
-      "teen_reason": "Family oriented, safe and suitable for all ages.",
-      "description": "Outdoor family event with hands-on activities like fire building, shelter building, pond dipping, orienteering, nature playscape, and trail walks."
+      "nature_reason": "Outdoor nature-based activities and education in conservation area.",
+      "teen_reason": "Family friendly with activities suitable for all ages.",
+      "description": "Outdoor adventure day with activities including fire building, shelter building, pond dipping, orienteering, and natural playscape for families."
     }
   },
   {
     "title": "Junior Naturalists Summer Camp",
-    "start": "2026-06-29T00:00:00",
-    "end": "2026-08-28T23:59:00",
+    "start": "2026-06-29",
+    "end": "2026-08-28",
     "url": "https://childslife.ca/event/junior-naturalists-summer-camp/",
     "extendedProps": {
-      "location": "Humber Arboretum, Rexdale, ON",
+      "location": "Humber Arboretum, 205 Humber College Blvd, Rexdale, ON, Canada",
       "venue": null,
       "source": "childslife.ca",
       "price": "$405",
       "age_info": "Teen",
       "tags": [
         "camp",
-        "youth",
         "nature",
-        "outdoors",
-        "education"
+        "teen",
+        "education",
+        "ecology"
       ],
-      "nature_reason": "Exploration and skills in natural ecosystems outdoors.",
-      "teen_reason": "Targeted for teens, suitable age group.",
-      "description": "Summer day camp designed for youth focusing on skills development and exploration of local ecosystems."
+      "nature_reason": "Outdoor nature-focused education for youth.",
+      "teen_reason": "Designed specifically for teens and youth aged in teen range.",
+      "description": "Summer camp for youth focusing on local ecosystems and building nature skills."
     }
   },
   {
-    "title": "Ripley’s Aquarium Summer Camps",
-    "start": "2026-06-29T00:00:00",
-    "end": "2026-09-04T23:59:00",
-    "url": "https://childslife.ca/event/ripleys-aquarium-summer-camps/",
+    "title": "Sign Up at the YMCA this Summer",
+    "start": "2026-06-29",
+    "end": "2026-08-28",
+    "url": "https://childslife.ca/event/summer-camp-spots-still-open-sign-up-at-the-ymca-this-summe/",
     "extendedProps": {
-      "location": "Ripley's Aquarium of Canada, Toronto, ON",
+      "location": "Toronto Central YMCA, 20 Grosvenor Street, Toronto, ON, Canada",
       "venue": null,
       "source": "childslife.ca",
       "price": "Free",
       "age_info": null,
       "tags": [
         "camp",
+        "summer",
         "children",
-        "aquatic",
-        "education",
-        "indoor"
+        "community",
+        "outdoors"
       ],
-      "nature_reason": "Aquatic life focus connected to nature.",
-      "teen_reason": "Safe camp suitable for children and teens.",
-      "description": "Week-long summer camps featuring aquarium gallery visits, science activities and crafts in a safe environment."
+      "nature_reason": "Camp located in nature and conservation settings outdoors.",
+      "teen_reason": "Suitable for children and youth without adult-only content.",
+      "description": "Summer day camp in conservation and urban settings focused on new experiences, skills and community."
+    }
+  },
+  {
+    "title": "Zoo Camp",
+    "start": "2026-06-29",
+    "end": "2026-08-28",
+    "url": "https://childslife.ca/event/zoo-camp/",
+    "extendedProps": {
+      "location": "Toronto Zoo, 361A Old Finch Avenue, Toronto, ON, Canada",
+      "venue": null,
+      "source": "childslife.ca",
+      "price": "Free",
+      "age_info": null,
+      "tags": [
+        "camp",
+        "wildlife",
+        "nature",
+        "outdoors",
+        "education"
+      ],
+      "nature_reason": "Nature and wildlife exploration at zoo.",
+      "teen_reason": "Suitable for a broad age range including teens, family friendly.",
+      "description": "Summer camp exploring wildlife and zoo themes with indoor and outdoor activities and behind-the-scenes access."
+    }
+  },
+  {
+    "title": "Ripley’s Aquarium Summer Camps",
+    "start": "2026-06-29",
+    "end": "2026-09-04",
+    "url": "https://childslife.ca/event/ripleys-aquarium-summer-camps/",
+    "extendedProps": {
+      "location": "Ripley's Aquarium of Canada, 288 Bremner Boulevard, Toronto, ON, Canada",
+      "venue": null,
+      "source": "childslife.ca",
+      "price": "Free",
+      "age_info": null,
+      "tags": [
+        "camp",
+        "aquatic",
+        "science",
+        "education",
+        "kids"
+      ],
+      "nature_reason": "Focus on aquatic life and science in aquarium setting.",
+      "teen_reason": "Suitable for children and teens, family friendly.",
+      "description": "Aquatic-themed summer camp with science activities, crafts and games in a safe environment."
+    }
+  },
+  {
+    "title": "Evergreen Brick Works Adventure Camp",
+    "start": "2026-06-29",
+    "end": "2026-09-04",
+    "url": "https://childslife.ca/event/evergreen-brickworks-adventure-camp/",
+    "extendedProps": {
+      "location": "Evergreen Brick Works, 550 Bayview Avenue, Toronto, Ontario, Canada",
+      "venue": null,
+      "source": "childslife.ca",
+      "price": "Free",
+      "age_info": null,
+      "tags": [
+        "camp",
+        "nature",
+        "exploration",
+        "wildlife",
+        "outdoors"
+      ],
+      "nature_reason": "Camp focused on local urban nature and wildlife exploration outdoors.",
+      "teen_reason": "Appropriate for children and teens; not restricted.",
+      "description": "Adventure day camp exploring Don Valley's natural environment including wildlife, plants and trails."
+    }
+  },
+  {
+    "title": "Immersive Conservation Training Program: Algonquin Canoe Trip",
+    "start": "2026-07-15",
+    "end": "2026-08-22",
+    "url": "https://childslife.ca/event/immersive-conservation-training-program-algonquin-canoe-trip/",
+    "extendedProps": {
+      "location": "Algonquin Provincial Park, Smoke Lake Access Point (#6), Highway 60 at km 14 1 south, Unorganized South Nipissing District, Ontario, Canada",
+      "venue": null,
+      "source": "childslife.ca",
+      "price": "Free",
+      "age_info": null,
+      "tags": [
+        "conservation",
+        "canoe",
+        "training",
+        "outdoors",
+        "nature"
+      ],
+      "nature_reason": "Extended outdoor wilderness canoe trip focused on conservation.",
+      "teen_reason": "Challenging program suitable for responsible teens and adults.",
+      "description": "8-day canoe trip combining conservation training, naturalist skills, citizen science and outdoor adventure."
     }
   },
   {
     "title": "Maple Syrup Festivals Guide: Southern Ontario",
-    "start": "2026-03-16",
+    "start": "2026-03-23",
     "end": null,
     "url": "https://childslife.ca/maple-syrup-festivals-2026-gta-family-guide/",
     "extendedProps": {
@@ -130,165 +475,165 @@
         "maple syrup",
         "family"
       ],
-      "nature_reason": "Outdoor festivals in natural settings",
-      "teen_reason": "Family friendly event suitable for teens",
+      "nature_reason": "Outdoor festival celebrating nature's maple syrup season",
+      "teen_reason": "Safe family events suitable for teens",
       "description": "Maple Syrup Festivals Guide: Southern Ontario"
     }
   },
   {
-    "title": "Family Programs at Kortright Centre",
+    "title": "Family Programs",
     "start": null,
     "end": null,
     "url": "https://kortright.org/family-programs/",
     "extendedProps": {
-      "location": "Kortright Centre",
+      "location": null,
       "venue": null,
       "source": "kortright.org",
       "price": null,
-      "age_info": "Family",
+      "age_info": null,
       "tags": [
         "family",
-        "programs",
-        "nature"
+        "nature",
+        "education"
       ],
-      "nature_reason": "Programs include outdoor and nature education",
-      "teen_reason": "Programs designed for families including teens",
-      "description": "Family programs including outdoor and nature education"
+      "nature_reason": "Outdoor and nature education programs",
+      "teen_reason": "Family nature programs suitable for teens",
+      "description": "Family Programs including camps, education, volunteering and nature activities."
     }
   },
   {
-    "title": "What’s On at Evergreen Brick Works",
+    "title": "What's On",
     "start": null,
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-works/whats-on/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": null,
       "age_info": null,
       "tags": [
-        "community",
         "nature",
+        "community",
         "events"
       ],
-      "nature_reason": "Many outdoor and nature based activities",
-      "teen_reason": "Community and family friendly events",
-      "description": "Various community, nature and cultural events at Evergreen Brick Works"
+      "nature_reason": "Events in a large natural community center",
+      "teen_reason": "General family friendly activities",
+      "description": "Lists of activities and events at Evergreen Brick Works."
     }
   },
   {
-    "title": "Evergreen Brick Works Saturday Farmers Market",
+    "title": "Saturday Farmers Market Evergreen’s Saturday Farmers Market",
     "start": null,
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/saturday-farmers-market/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": null,
       "age_info": null,
       "tags": [
         "farmers market",
-        "outdoors",
-        "community"
+        "outdoor",
+        "food"
       ],
-      "nature_reason": "Outdoor market in natural setting",
-      "teen_reason": "Open to all ages, family friendly",
-      "description": "Year-round Saturday Farmers Market connecting people to local farmers and producers"
+      "nature_reason": "Outdoor market supporting local agriculture",
+      "teen_reason": "Safe public event for all ages",
+      "description": "Year-round farmers market with local Ontario producers."
     }
   },
   {
-    "title": "The Children’s Garden at Evergreen Brick Works",
+    "title": "The Children’s Garden",
     "start": null,
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/the-childrens-garden/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": null,
-      "age_info": "Children",
+      "age_info": null,
       "tags": [
         "garden",
-        "children",
+        "kids",
         "nature"
       ],
-      "nature_reason": "Outdoor garden for nature exploration",
-      "teen_reason": "Safe, educational environment for kids and teens",
-      "description": "Children’s Garden for kids to explore and connect with nature"
+      "nature_reason": "Outdoor garden connecting kids with nature",
+      "teen_reason": "Safe, educational outdoor activity",
+      "description": "Children's outdoor garden for exploring nature."
     }
   },
   {
-    "title": "Free Public Skate at Evergreen Brick Works",
+    "title": "Free Public Skate",
     "start": null,
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/free-public-skate/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": "Free",
       "age_info": null,
       "tags": [
         "skating",
-        "outdoors",
-        "free"
+        "outdoor",
+        "family"
       ],
-      "nature_reason": "Outdoor skating in garden setting",
-      "teen_reason": "Family friendly skating activity",
-      "description": "Outdoor skating rink at Evergreen Brick Works"
+      "nature_reason": "Outdoor activity in a garden setting",
+      "teen_reason": "Safe physical activity for all ages",
+      "description": "Outdoor skating rink at Evergreen Brick Works."
     }
   },
   {
-    "title": "Seedy Saturday 2026 at Evergreen Brick Works",
+    "title": "Seedy Saturday 2026",
     "start": "2026-03-07",
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/events/seedy-saturday-2026/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": "Free",
       "age_info": null,
       "tags": [
-        "seed swap",
         "gardening",
-        "community"
+        "seed swap",
+        "market"
       ],
       "nature_reason": "Gardening and seed swap event outdoors",
-      "teen_reason": "All ages welcome, family friendly",
-      "description": "Free seed swap, garden tools exchange, vendors, and demos at Evergreen Brick Works"
+      "teen_reason": "Family-friendly garden event suitable for teens",
+      "description": "Seed swap, garden tools exchange, vendors, demos & farmers market."
     }
   },
   {
-    "title": "Earth Month at Evergreen Brick Works April 2026",
+    "title": "Earth Month at Evergreen Brick Works",
     "start": "2026-04-01",
     "end": "2026-04-30",
     "url": "https://www.evergreen.ca/evergreen-brick-work/events/earth-month-2026/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": null,
       "age_info": null,
       "tags": [
-        "earth month",
-        "sustainability",
-        "festival"
+        "environment",
+        "festival",
+        "sustainability"
       ],
-      "nature_reason": "Focus on sustainability and nature",
-      "teen_reason": "Family friendly educational festival",
-      "description": "Toronto Sustainability Festival and Earth Month celebrations"
+      "nature_reason": "Outdoor sustainability focused festival",
+      "teen_reason": "Safe, educational festival for teens and families",
+      "description": "Toronto Sustainability Festival celebrating Earth Month."
     }
   },
   {
-    "title": "Community Spotlight at Evergreen Brick Works September 2026",
-    "start": "2026-09-01",
-    "end": "2026-09-30",
+    "title": "Community Spotlight",
+    "start": null,
+    "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/community-spotlight/",
     "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
+      "location": null,
       "venue": null,
       "source": "evergreen.ca",
       "price": null,
@@ -296,95 +641,11 @@
       "tags": [
         "community",
         "outdoor",
-        "events"
+        "projects"
       ],
-      "nature_reason": "Outdoors community events",
-      "teen_reason": "Community events suitable for teens",
-      "description": "Community based events and activities at Evergreen Brick Works"
-    }
-  },
-  {
-    "title": "Site Tours at Evergreen Brick Works",
-    "start": null,
-    "end": null,
-    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/site-tours/",
-    "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
-      "venue": null,
-      "source": "evergreen.ca",
-      "price": null,
-      "age_info": null,
-      "tags": [
-        "tours",
-        "community",
-        "education"
-      ],
-      "nature_reason": "Tours include natural and community spaces",
-      "teen_reason": "Safe educational tours suitable for teens",
-      "description": "Free public and private tours at Evergreen Brick Works"
-    }
-  },
-  {
-    "title": "Public Art at Evergreen Brick Works",
-    "start": null,
-    "end": null,
-    "url": "https://www.evergreen.ca/evergreen-brick-works/explore/public-art-at-evergreen/",
-    "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
-      "venue": null,
-      "source": "evergreen.ca",
-      "price": null,
-      "age_info": null,
-      "tags": [
-        "art",
-        "outdoors",
-        "community"
-      ],
-      "nature_reason": "Outdoor art in natural setting",
-      "teen_reason": "Family friendly public art",
-      "description": "Public art installations at Evergreen Brick Works"
-    }
-  },
-  {
-    "title": "School Visits at Evergreen Brick Works October 2026 to June 2027",
-    "start": "2026-10-01",
-    "end": "2027-06-30",
-    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/school-visits/",
-    "extendedProps": {
-      "location": "Evergreen Brick Works, Toronto",
-      "venue": null,
-      "source": "evergreen.ca",
-      "price": null,
-      "age_info": "School groups",
-      "tags": [
-        "education",
-        "school",
-        "nature"
-      ],
-      "nature_reason": "Nature and ecological education program",
-      "teen_reason": "School visits suitable for teens",
-      "description": "Educational school visits focusing on natural and ecological learning"
-    }
-  },
-  {
-    "title": "Picnic Café and Saturday Market at Evergreen Brick Works",
-    "start": null,
-    "end": null,
-    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/picnic-cafe/",
-    "extendedProps": {
-      "location": "Toronto, Evergreen Brick Works",
-      "venue": null,
-      "source": "evergreen.ca",
-      "price": "Free",
-      "age_info": "Children",
-      "tags": [
-        "market",
-        "children",
-        "garden"
-      ],
-      "nature_reason": "Outdoor garden and market setting",
-      "teen_reason": "Family friendly, safe environment",
-      "description": "Saturday Farmers Market and Children’s Garden activities"
+      "nature_reason": "Community projects in outdoor/natural setting",
+      "teen_reason": "Community engagement suitable for teens",
+      "description": "Community project opportunities at Evergreen Brick Works."
     }
   },
   {
@@ -393,7 +654,91 @@
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/site-tours/",
     "extendedProps": {
-      "location": "Toronto to local Ontario farmers and producers",
+      "location": null,
+      "venue": null,
+      "source": "evergreen.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "tour",
+        "heritage",
+        "nature"
+      ],
+      "nature_reason": "Tours including natural and heritage aspects outdoors",
+      "teen_reason": "Safe educational tours",
+      "description": "Free public and private tours of Evergreen Brick Works."
+    }
+  },
+  {
+    "title": "Public Art at Evergreen",
+    "start": null,
+    "end": null,
+    "url": "https://www.evergreen.ca/evergreen-brick-works/explore/public-art-at-evergreen/",
+    "extendedProps": {
+      "location": null,
+      "venue": null,
+      "source": "evergreen.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "art",
+        "outdoor",
+        "public"
+      ],
+      "nature_reason": "Outdoor public art in nature setting",
+      "teen_reason": "Safe public art suitable for all ages",
+      "description": "Public art installations at Evergreen."
+    }
+  },
+  {
+    "title": "School Visits at Evergreen Brick Works (Oct to June)",
+    "start": null,
+    "end": null,
+    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/school-visits/",
+    "extendedProps": {
+      "location": null,
+      "venue": null,
+      "source": "evergreen.ca",
+      "price": null,
+      "age_info": null,
+      "tags": [
+        "school visits",
+        "education",
+        "nature"
+      ],
+      "nature_reason": "Nature-based educational programs",
+      "teen_reason": "Safe, age inclusive school programs",
+      "description": "Educational school programs using natural, ecological methods."
+    }
+  },
+  {
+    "title": "Picnic Café Every Saturday 9am-1pm",
+    "start": null,
+    "end": null,
+    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/picnic-cafe/",
+    "extendedProps": {
+      "location": "Toronto",
+      "venue": null,
+      "source": "evergreen.ca",
+      "price": "Free",
+      "age_info": "Children",
+      "tags": [
+        "picnic",
+        "family",
+        "market"
+      ],
+      "nature_reason": "Outdoor family-friendly nature setting",
+      "teen_reason": "Safe for children and teens",
+      "description": "Picnic Café with family activities and local food market."
+    }
+  },
+  {
+    "title": "Site Tours",
+    "start": null,
+    "end": null,
+    "url": "https://www.evergreen.ca/evergreen-brick-work/activities/site-tours/",
+    "extendedProps": {
+      "location": "Toronto, Ontario",
       "venue": null,
       "source": "evergreen.ca",
       "price": "Free",
@@ -401,12 +746,12 @@
       "tags": [
         "tour",
         "nature",
-        "family",
-        "free"
+        "sustainability",
+        "family"
       ],
-      "nature_reason": "Tours focus on ecology, sustainability, and connection with local nature and farms.",
-      "teen_reason": "Family friendly, safe, educational, no adult content or restrictions.",
-      "description": "Free site tours at Evergreen Brick Works to explore sustainability, ecology, and how ecosystems and people co-exist in Toronto's urban environment. Tours connect visitors to local farmers, producers, and nature."
+      "nature_reason": "Tours explore outdoor ecosystems, sustainability, and green spaces.",
+      "teen_reason": "Suitable for children and families; no adult content or restrictions.",
+      "description": "Evergreen Brick Works offers site tours every Saturday 9am-1pm. Explore the ecosystem and sustainability features of this urban environmental community centre and green-technology showcase."
     }
   },
   {
@@ -415,7 +760,7 @@
     "end": null,
     "url": "https://www.evergreen.ca/evergreen-brick-work/activities/audio-tours/",
     "extendedProps": {
-      "location": "Toronto to local Ontario farmers and producers",
+      "location": "Toronto, Ontario",
       "venue": null,
       "source": "evergreen.ca",
       "price": "Free",
@@ -424,12 +769,11 @@
         "audio",
         "tour",
         "art",
-        "nature",
-        "free"
+        "nature"
       ],
-      "nature_reason": "Focus on environmental community, urban nature, and site ecology.",
-      "teen_reason": "Suitable for children and families, no adult restrictions.",
-      "description": "Free immersive audio tours at Evergreen Brick Works featuring local and international art and stories about the environmental community centre and urban nature connections."
+      "nature_reason": "Audio tours focus on outdoor art and environmental education in a park setting.",
+      "teen_reason": "Family friendly content, appropriate for children and teens.",
+      "description": "Self-guided audio tours available every Saturday 9am-1pm at Evergreen Brick Works to discover the site’s art installations and environmental features."
     }
   }
 ]
