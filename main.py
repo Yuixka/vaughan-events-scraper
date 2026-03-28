@@ -1,917 +1,465 @@
-# scrape_3sites_teens.py
-# pip install playwright beautifulsoup4 lxml python-dateutil openai
-# playwright install chromium
-# export OPENAI_API_KEY="YOUR_KEY"
-# python3 scrape_3sites_teens.py
-
-import os, re, json
-from dataclasses import dataclass, asdict
+import os
+import re
+import json
+from dataclasses import dataclass
+from urllib.parse import urljoin, urlparse
 from typing import Optional, List, Dict, Any
-from urllib.parse import urlparse, urljoin
-from dateutil import parser as dtparser
+
 from bs4 import BeautifulSoup
-from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+from dateutil import parser as dtparser
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 from openai import OpenAI
 
-# Env var wins; fallback optional
-HARDCODED_OPENAI_API_KEY = ""
-client = None
+# -------- CONFIG --------
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 
-SITES = [
-    "https://trca.ca/events-calendar/",
-    "https://www.eventbrite.ca/d/canada--york/outdoor-events/",
-    "https://visitvaughan.ca/calendar/2026/04/01/",
-    "https://childslife.ca/events/category/kids-programs-and-workshops/nature-wildlife-programs/",
-    "https://kortright.org/whats-on/calendar/",
-    "https://www.evergreen.ca/evergreen-brick-works/whats-on/",
+SITE_CONFIGS: list[dict[str, Any]] = [
+    # Main calendar/listing sources from the PDF
+    {"url": "https://trca.ca/events-calendar/", "kind": "listing", "tags": ["nature", "toronto", "vaughan"]},
+    {"url": "https://visitvaughan.ca/calendar/", "kind": "listing", "tags": ["vaughan"]},
+    {"url": "https://childslife.ca/events/category/kids-programs-and-workshops/nature-wildlife-programs/", "kind": "listing", "tags": ["nature", "kids"]},
+    {"url": "https://kortright.org/whats-on/calendar/", "kind": "listing", "tags": ["vaughan", "nature"]},
+    {"url": "https://kortright.org/about-us/volunteer/", "kind": "single_or_listing", "tags": ["volunteer", "nature"]},
+    {"url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/green-guardians/community-tree-planting", "kind": "single_or_listing", "tags": ["vaughan", "tree planting", "volunteer"]},
+    {"url": "https://www.yourleaf.org/events", "kind": "listing", "tags": ["tree planting", "nature"]},
+    {"url": "https://www.vaughan.ca/news/plant-new-roots-your-community", "kind": "single_or_listing", "tags": ["vaughan", "tree planting"]},
+    {"url": "https://www.york.ca/newsroom/campaigns-projects/york-regional-forest-walks-and-events", "kind": "single_or_listing", "tags": ["forest", "walks"]},
+    {"url": "https://www.evergreen.ca/evergreen-brick-works/whats-on/", "kind": "listing", "tags": ["nature", "toronto"]},
+    {"url": "https://vaughanpl.info/programs", "kind": "listing", "tags": ["library", "teen"]},
+    {"url": "https://www.vaughan.ca/residential/recreation-programs-and-fitness/service-registration/youth-week", "kind": "single_or_listing", "tags": ["youth"]},
+    {"url": "https://www.todocanada.ca/city/toronto/events/", "kind": "listing", "tags": ["toronto"]},
+    {"url": "https://www.eventbrite.ca/d/canada--york/free--travel-and-outdoor--events/?page=2", "kind": "listing", "tags": ["eventbrite", "outdoor"]},
+    {"url": "https://www.cambridgebutterfly.com/upcoming-events/", "kind": "listing", "tags": ["butterfly", "nature"]},
+    {"url": "https://ontarionature.org/events/annual-gathering/", "kind": "single_or_listing", "tags": ["nature"]},
+    {"url": "https://www.hnpcanada.ca/upcoming-events", "kind": "listing", "tags": ["nature"]},
+    {"url": "https://hamiltonnature.org/event-calendar/month/2026-04/", "kind": "listing", "tags": ["nature", "hamilton"]},
+    {"url": "https://downsviewpark.ca/events", "kind": "listing", "tags": ["nature", "toronto"]},
+    {"url": "https://tpl.bibliocommons.com/v2/events/69b2f414491b809c6f1fe7e0", "kind": "single_or_listing", "tags": ["library", "teen"]},
+    {"url": "https://www.toronto.ca/explore-enjoy/parks-recreation/program-activities/arts-hobbies-interests/nature-eco-programs/forestry-talks-tours/forestry-talks-tours-calendar/", "kind": "listing", "tags": ["forestry", "nature"]},
+    {"url": "https://www.torontozoo.com/events", "kind": "listing", "tags": ["zoo", "nature"]},
+    {"url": "https://stellasplace.ca/program-participants/program-directory/", "kind": "listing", "tags": ["mental health", "youth"]},
+    {"url": "https://highparknaturecentre.com/nature-clubs-youth/", "kind": "single_or_listing", "tags": ["youth", "nature"]},
+    {"url": "https://bramlib.libnet.info/event/15927469", "kind": "single_or_listing", "tags": ["library", "nature", "teen"]},
+    {"url": "https://cvc.ca/events/list/", "kind": "listing", "tags": ["conservation", "nature"]},
+    {"url": "https://youthhubs.ca/site/maple-youth-wellness-hub", "kind": "single_or_listing", "tags": ["mental health", "youth"]},
+    {"url": "https://www.vaughanmills.com/events/play-it-forward-for-mental-health/", "kind": "single_or_listing", "tags": ["mental health", "youth"]},
+    {"url": "https://www.mackenziehealth.ca/support-us/foundation/events/community-events", "kind": "listing", "tags": ["community", "health"]},
+    {"url": "https://downsviewpark.ca/events/earth-day-downsview-park", "kind": "single_or_listing", "tags": ["earth day", "nature"]},
+    {"url": "https://www.scarbenv.ca", "kind": "listing", "tags": ["environment", "cleanup"]},
+    {"url": "https://torontofieldnaturalists.org", "kind": "listing", "tags": ["nature walks", "wildlife"]},
+    {"url": "https://www.toronto.ca/explore-enjoy/parks-recreation/places-spaces/parks-and-recreation-facilities/", "kind": "listing", "tags": ["parks"]},
+    {"url": "https://stridestoronto.ca/program-service/whats-up-walk-in/", "kind": "single_or_listing", "tags": ["mental health", "youth"]},
+
+    # Existing sources already present in your code
+    {"url": "https://www.eventbrite.ca/d/canada--vaughan/events/", "kind": "listing", "tags": ["eventbrite", "vaughan"]},
+    {"url": "https://www.vaughanpl.info/events_calendars/calendar", "kind": "listing", "tags": ["library", "calendar"]},
+    {"url": "https://www.vaughan.ca/upcoming-events", "kind": "listing", "tags": ["vaughan"]},
+    {"url": "https://vaughanbusiness.ca/events/", "kind": "listing", "tags": ["business"]},
+    {"url": "https://assemblypark.ca/events/", "kind": "listing", "tags": ["community"]},
+    {"url": "https://www.meetup.com/find/ca--on--vaughan/", "kind": "listing", "tags": ["meetup"]},
 ]
 
-OUT_JSON = "nature_teens_events.json"
+POSITIVE_KEYWORDS = {
+    "nature", "outdoor", "forest", "tree", "plant", "gardening", "garden", "wildlife",
+    "conservation", "hike", "hiking", "bird", "birding", "park", "trail", "ravine",
+    "earth day", "cleanup", "walk", "walks", "zoo", "camp", "campfire", "scavenger",
+    "volunteer", "volunteering", "eco", "environment", "butterfly", "naturalist", "forestry"
+}
+NEGATIVE_KEYWORDS = {
+    "casino", "nightclub", "nightlife", "bar", "cocktail", "networking", "sales", "real estate",
+    "business expo", "conference", "wedding show", "marketplace"}
+YOUTH_HINTS = {"teen", "teens", "youth", "13-17", "12-25", "family", "all ages", "student"}
+LOCATION_HINTS = {"vaughan", "woodbridge", "maple", "thornhill", "richmond hill", "york", "toronto", "scarborough", "brampton", "hamilton"}
 
-COMMON_UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36"
-)
-
-# -------------------------
-# Data model
-# -------------------------
-@dataclass
-class RawEvent:
-    source: str
-    title: str
-    url: Optional[str] = None
-    when_text: Optional[str] = None
-    time_text: Optional[str] = None
-    location_text: Optional[str] = None
-    venue_text: Optional[str] = None
-    price_text: Optional[str] = None
-    age_text: Optional[str] = None
-    description_text: Optional[str] = None
 
 @dataclass
-class NormalizedEvent:
+class Event:
     title: str
     start: Optional[str]
     end: Optional[str]
-    url: Optional[str]
     location: Optional[str]
-    venue: Optional[str]
+    url: Optional[str]
     source: str
-    price: Optional[str]
-    age_info: Optional[str]
     description: Optional[str]
-    tags: List[str]
-    nature_based: bool
-    teen_ok_13_17: bool
-    teen_reason: str
-    nature_reason: str
+    nature_based: Optional[bool] = None
+    teen_ok_13_17: Optional[bool] = None
+    nature_reason: Optional[str] = None
+    teen_reason: Optional[str] = None
+    nature_tags: Optional[list[str]] = None
 
-# -------------------------
-# Utils
-# -------------------------
-def get_client() -> OpenAI:
-    global client
-    api_key = (os.environ.get("OPENAI_API_KEY") or HARDCODED_OPENAI_API_KEY).strip()
-    if not api_key:
-        raise SystemExit("Missing OPENAI_API_KEY (or set HARDCODED_OPENAI_API_KEY in file).")
-    if client is None:
-        client = OpenAI(api_key=api_key)
-    return client
 
-def host(url: str) -> str:
-    return urlparse(url).netloc.replace("www.", "")
+def normalize_whitespace(s: str) -> str:
+    return re.sub(r"\s+", " ", (s or "").strip())
 
-def norm_ws(s: Optional[str]) -> Optional[str]:
-    if not s:
+
+def try_parse_date(text: str) -> Optional[str]:
+    text = normalize_whitespace(text)
+    if not text:
         return None
-    s = re.sub(r"\s+", " ", s).strip()
-    return s or None
-
-def safe_abs(base: str, href: str) -> str:
-    return urljoin(base, href)
-
-def try_parse_datetime(date_text: Optional[str], time_text: Optional[str]) -> Optional[str]:
-    d = norm_ws(date_text)
-    t = norm_ws(time_text)
-    if not d and not t:
-        return None
-    joined = " ".join([x for x in [d, t] if x])
     try:
-        dt = dtparser.parse(joined, fuzzy=True)
-        if d and not t:
-            return dt.date().isoformat()
+        dt = dtparser.parse(text, fuzzy=True)
         return dt.isoformat(timespec="minutes")
     except Exception:
-        if d:
-            try:
-                dt = dtparser.parse(d, fuzzy=True)
-                return dt.date().isoformat()
-            except Exception:
-                return None
         return None
 
-# -------------------------
-# Playwright helpers
-# -------------------------
-def goto(page, url: str, timeout_ms: int = 90000):
-    page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
 
-def click_if_exists(page, selectors: List[str], timeout_ms: int = 1500) -> bool:
-    for sel in selectors:
-        try:
-            el = page.locator(sel)
-            if el.count() > 0 and el.first.is_visible():
-                el.first.click(timeout=timeout_ms)
-                return True
-        except Exception:
-            continue
-    return False
-
-def scroll_to_bottom_until_stable(page, max_rounds: int = 10, pause_ms: int = 650):
-    last_h = 0
-    stable = 0
-    for _ in range(max_rounds):
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        page.wait_for_timeout(pause_ms)
-        h = page.evaluate("document.body.scrollHeight")
-        if h == last_h:
-            stable += 1
-            if stable >= 2:
-                break
-        else:
-            stable = 0
-            last_h = h
-
-def try_accept_cookies(page):
-    click_if_exists(page, [
-        "button:has-text('Accept all')",
-        "button:has-text('Accept All')",
-        "button:has-text('Accept')",
-        "button:has-text('I agree')",
-        "button:has-text('Agree')",
-        "button:has-text('OK')",
-        "button:has-text('Got it')",
-        "button[aria-label*='Accept']",
-        "button[aria-label*='agree']",
-        "text=Accept all",
-        "text=Accept",
-    ], timeout_ms=1200)
-
-# -------------------------
-# Site A: TRCA
-# -------------------------
-def scrape_trca(page, url: str, max_clicks: int = 20) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(600)
-    try_accept_cookies(page)
-
-    for _ in range(max_clicks):
-        scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=500)
-        clicked = click_if_exists(page, [
-            "button:has-text('Load More')",
-            "button:has-text('Load more')",
-            "a:has-text('Load More')",
-            "a:has-text('Load more')",
-            "[aria-label*='Load']",
-        ])
-        if not clicked:
-            break
-        page.wait_for_timeout(900)
-
-    soup = BeautifulSoup(page.content(), "lxml")
-    events: List[RawEvent] = []
-
-    for a in soup.select("a[href*='/event/'], a[href*='/events/']"):
-        title = norm_ws(a.get_text(" "))
-        href = a.get("href") or ""
-        if not title or len(title) < 6:
-            continue
-
-        abs_url = safe_abs(url, href)
-
-        card = a
-        for _ in range(6):
-            if getattr(card, "parent", None):
-                card = card.parent
-
-        block = norm_ws(card.get_text(" ")) or ""
-        block = block[:1200]
-
-        when_text = None
-        time_text = None
-        location_text = None
-        price_text = None
-
-        m = re.search(r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,50}\d{1,2}(?:[^0-9]{0,10}\d{4})?)", block, re.I)
+def infer_location(text: str) -> Optional[str]:
+    txt = normalize_whitespace(text)
+    for hint in LOCATION_HINTS:
+        m = re.search(rf"\b({re.escape(hint)}[^|•\n]{{0,80}})", txt, re.I)
         if m:
-            when_text = m.group(1)
+            return normalize_whitespace(m.group(1))[:140]
+    return None
 
-        tm = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}:\d{2}\s?(?:AM|PM))?)", block, re.I)
-        if tm:
-            time_text = tm.group(1)
 
-        lm = re.search(r"\b(Vaughan|Woodbridge|Bolton|Kleinburg|King City|Ontario|ON|Toronto)\b[^|•\n]{0,80}", block, re.I)
-        if lm:
-            location_text = norm_ws(lm.group(0))
+def looks_relevant(text: str) -> bool:
+    txt = normalize_whitespace(text).lower()
+    if len(txt) < 6:
+        return False
+    if any(k in txt for k in NEGATIVE_KEYWORDS):
+        return False
+    return any(k in txt for k in POSITIVE_KEYWORDS) or any(k in txt for k in YOUTH_HINTS)
 
-        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
-        if pm:
-            price_text = pm.group(1)
 
-        events.append(RawEvent(
-            source=host(url),
-            title=title[:160],
-            url=abs_url,
-            when_text=norm_ws(when_text),
-            time_text=norm_ws(time_text),
-            location_text=norm_ws(location_text),
-            price_text=norm_ws(price_text),
-            description_text=norm_ws(block),
-        ))
+def accept_cookies(page):
+    labels = [
+        "Accept", "I agree", "Got it", "Allow all", "Accept All", "Accept all", "Agree"
+    ]
+    for label in labels:
+        try:
+            btn = page.locator(f"button:has-text('{label}')").first
+            if btn.count() > 0:
+                btn.click(timeout=1500)
+                page.wait_for_timeout(500)
+                return
+        except Exception:
+            pass
 
-    uniq: Dict[tuple, RawEvent] = {}
-    for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:250]
 
-# -------------------------
-# Site B: Eventbrite
-# -------------------------
-def scrape_eventbrite(page, url: str, max_pages: int = 5) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(900)
-    try_accept_cookies(page)
-
-    events: List[RawEvent] = []
-    visited_pages = 0
-
-    while visited_pages < max_pages:
-        scroll_to_bottom_until_stable(page, max_rounds=7, pause_ms=700)
-        soup = BeautifulSoup(page.content(), "lxml")
-
-        for a in soup.select("a[href*='/e/']"):
-            href = a.get("href") or ""
-            abs_url = safe_abs(url, href)
-            title = norm_ws(a.get_text(" "))
-            if not title or len(title) < 6:
-                continue
-
-            card = a
-            for _ in range(7):
-                if getattr(card, "parent", None):
-                    card = card.parent
-
-            block = norm_ws(card.get_text(" ")) or ""
-            block = block[:1200]
-
-            when_text = None
-            time_text = None
-            location_text = None
-
-            m = re.search(
-                r"(\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b.*?\d{4}|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b.*?\d{4})",
-                block, re.I
-            )
-            if m:
-                when_text = m.group(1)
-
-            tm = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b)", block, re.I)
-            if tm:
-                time_text = tm.group(1)
-
-            lm = re.search(r"\b(Vaughan|York|Woodbridge|Richmond Hill|Markham|Toronto|Ontario|ON)\b[^|•\n]{0,80}", block, re.I)
-            if lm:
-                location_text = norm_ws(lm.group(0))
-
-            events.append(RawEvent(
-                source=host(url),
-                title=title[:160],
-                url=abs_url,
-                when_text=norm_ws(when_text),
-                time_text=norm_ws(time_text),
-                location_text=norm_ws(location_text),
-                description_text=norm_ws(block),
-            ))
-
-        next_clicked = click_if_exists(page, [
-            "a[rel='next']",
-            "button[aria-label='Next']",
-            "a[aria-label='Next']",
-            "a:has-text('Next')",
-            "button:has-text('Next')",
-            "a:has-text('›')",
-            "button:has-text('›')",
-        ], timeout_ms=2200)
-
-        if not next_clicked:
-            break
-
-        visited_pages += 1
-        page.wait_for_timeout(1400)
-        try_accept_cookies(page)
-
-    uniq: Dict[tuple, RawEvent] = {}
-    for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:400]
-
-# -------------------------
-# Site C: VisitVaughan Calendar
-# -------------------------
-def scrape_visitvaughan(page, url: str, months_forward: int = 3) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(900)
-    try_accept_cookies(page)
-
-    events: List[RawEvent] = []
-
-    def parse_current():
-        soup = BeautifulSoup(page.content(), "lxml")
-        for a in soup.select("a[href*='/calendar/'], a[href*='/event/'], a[href*='/events/']"):
-            title = norm_ws(a.get_text(" "))
-            href = a.get("href") or ""
-            if not title or len(title) < 6:
-                continue
-
-            abs_url = safe_abs(url, href)
-
-            card = a
-            for _ in range(7):
-                if getattr(card, "parent", None):
-                    card = card.parent
-
-            block = norm_ws(card.get_text(" ")) or ""
-            block = block[:1400]
-
-            when_text = None
-            time_text = None
-            location_text = None
-
-            m = re.search(r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,50}\d{1,2}(?:[^0-9]{0,10}\d{4})?)", block, re.I)
-            if m:
-                when_text = m.group(1)
-
-            tm = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}:\d{2}\s?(?:AM|PM))?)", block, re.I)
-            if tm:
-                time_text = tm.group(1)
-
-            lm = re.search(r"\b(Vaughan|Woodbridge|Ontario|ON|Toronto)\b[^|•\n]{0,80}", block, re.I)
-            if lm:
-                location_text = norm_ws(lm.group(0))
-
-            events.append(RawEvent(
-                source=host(url),
-                title=title[:160],
-                url=abs_url,
-                when_text=norm_ws(when_text),
-                time_text=norm_ws(time_text),
-                location_text=norm_ws(location_text),
-                description_text=norm_ws(block),
-            ))
-
-    for _ in range(months_forward + 1):
-        for _k in range(10):
-            scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=600)
-            clicked = click_if_exists(page, [
-                "button:has-text('LOAD MORE EVENTS')",
-                "button:has-text('Load more events')",
-                "a:has-text('LOAD MORE EVENTS')",
-                "a:has-text('Load more events')",
-                "button:has-text('Load More')",
-                "a:has-text('Load More')",
-            ], timeout_ms=1700)
-            if not clicked:
-                break
-            page.wait_for_timeout(900)
-
-        parse_current()
-
-        moved = click_if_exists(page, [
-            "button[aria-label*='Next']",
-            "a[aria-label*='Next']",
-            "button:has-text('›')",
-            "a:has-text('›')",
-            "button:has-text('>')",
-            "a:has-text('>')",
-        ], timeout_ms=2200)
-
-        if not moved:
+def click_load_more(page):
+    selectors = [
+        "button:has-text('Load more')",
+        "button:has-text('Load More')",
+        "a:has-text('Load more')",
+        "a:has-text('Load More')",
+        "button:has-text('More')",
+        "a:has-text('Next')",
+        "button:has-text('Next')",
+        "[aria-label='Next']",
+        ".pagination-next a",
+        ".next a",
+    ]
+    clicked = 0
+    for _ in range(10):
+        did_click = False
+        for selector in selectors:
             try:
-                toolbar = page.locator("header, .calendar, .tribe-events-c-top-bar, .fc-toolbar")
-                if toolbar.count() > 0:
-                    btns = toolbar.first.locator("button, a")
-                    if btns.count() > 0:
-                        btns.nth(btns.count() - 1).click(timeout=1500)
-                        moved = True
+                el = page.locator(selector).first
+                if el.count() > 0 and el.is_visible():
+                    el.click(timeout=2000)
+                    page.wait_for_timeout(1200)
+                    did_click = True
+                    clicked += 1
+                    break
             except Exception:
-                pass
-
-        if not moved:
+                continue
+        if not did_click:
             break
+    return clicked
 
-        page.wait_for_timeout(1200)
-        try_accept_cookies(page)
 
-    uniq: Dict[tuple, RawEvent] = {}
-    for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:400]
+def render_page_html(url: str, timeout_ms: int = 90000) -> str:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 1440, "height": 2200})
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            page.wait_for_timeout(1500)
+            accept_cookies(page)
+            for _ in range(6):
+                page.mouse.wheel(0, 1500)
+                page.wait_for_timeout(350)
+            click_load_more(page)
+            html = page.content()
+        finally:
+            browser.close()
+    return html
 
-# -------------------------
-# Site D: Child's Life
-# -------------------------
-def scrape_childslife(page, url: str) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(900)
-    try_accept_cookies(page)
-    scroll_to_bottom_until_stable(page, max_rounds=5, pause_ms=700)
 
-    soup = BeautifulSoup(page.content(), "lxml")
-    events: List[RawEvent] = []
+def extract_event_cards(soup: BeautifulSoup, base_url: str) -> list[Event]:
+    host = urlparse(base_url).netloc.replace("www.", "")
+    events: list[Event] = []
+    seen: set[tuple[str, str]] = set()
 
-    for art in soup.select("article, .tribe-events-calendar-list__event-row, .type-tribe_events, .tribe-common-g-row"):
-        a = art.select_one("h3 a, h2 a, h4 a, a[href*='/event/'], a[href*='/events/']")
+    card_selectors = [
+        "article", ".event", ".events-card", ".tribe-events-event", ".event-card",
+        ".calendar-event", ".search-result", ".listing", ".views-row", ".program-item"
+    ]
+
+    candidate_nodes = []
+    for selector in card_selectors:
+        candidate_nodes.extend(soup.select(selector))
+    if not candidate_nodes:
+        candidate_nodes = list(soup.select("a[href]"))
+
+    for node in candidate_nodes[:500]:
+        a = node if getattr(node, "name", "") == "a" else node.select_one("a[href]")
         if not a:
             continue
-
-        title = norm_ws(a.get_text(" "))
-        href = a.get("href") or ""
-        if not title or len(title) < 6:
+        href = (a.get("href") or "").strip()
+        title = normalize_whitespace(a.get_text(" "))
+        if not href or not title:
+            continue
+        full_url = urljoin(base_url, href)
+        block_text = normalize_whitespace(node.get_text(" "))[:1500]
+        if not looks_relevant(block_text + " " + title):
             continue
 
-        block = norm_ws(art.get_text(" ")) or ""
-        when_text = None
-        time_text = None
-        location_text = None
-        price_text = None
-        age_text = None
+        date_guess = None
+        patterns = [
+            r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:,\s*\d{4})?(?:[^A-Za-z0-9]{1,10}\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)?",
+            r"\b\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2})?\b",
+            r"\b\d{1,2}/\d{1,2}/\d{2,4}\b",
+        ]
+        for pat in patterns:
+            m = re.search(pat, block_text, re.I)
+            if m:
+                date_guess = try_parse_date(m.group(0))
+                if date_guess:
+                    break
 
-        m = re.search(
-            r"((?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun)[^|•\n]{0,120})",
-            block,
-            re.I
-        )
-        if m:
-            when_text = m.group(1)
+        location = infer_location(block_text)
+        key = (title.lower(), full_url)
+        if key in seen:
+            continue
+        seen.add(key)
 
-        tm = re.search(r"(\b\d{1,2}(?::\d{2})?\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}(?::\d{2})?\s?(?:AM|PM))?)", block, re.I)
-        if tm:
-            time_text = tm.group(1)
-
-        lm = re.search(r"([A-Z][^|•\n]{0,100}(?:Vaughan|Woodbridge|Toronto|Rexdale|Midland|Ontario|ON|Canada)[^|•\n]{0,100})", block, re.I)
-        if lm:
-            location_text = norm_ws(lm.group(1))
-
-        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
-        if pm:
-            price_text = pm.group(1)
-
-        am = re.search(r"(Ages?\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\+|All ages|Family friendly|Teens?)", block, re.I)
-        if am:
-            age_text = am.group(1)
-
-        events.append(RawEvent(
-            source=host(url),
-            title=title[:160],
-            url=safe_abs(url, href),
-            when_text=norm_ws(when_text),
-            time_text=norm_ws(time_text),
-            location_text=norm_ws(location_text),
-            price_text=norm_ws(price_text),
-            age_text=norm_ws(age_text),
-            description_text=block[:1400],
+        events.append(Event(
+            title=title[:180],
+            start=date_guess,
+            end=None,
+            location=location,
+            url=full_url,
+            source=host,
+            description=block_text[:900] if block_text else None,
         ))
 
-    uniq: Dict[tuple, RawEvent] = {}
-    for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:250]
+    return events
 
-# -------------------------
-# Site E: Kortright
-# -------------------------
-def scrape_kortright(page, url: str, max_clicks: int = 8) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(1000)
-    try_accept_cookies(page)
 
-    for _ in range(max_clicks):
-        scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=700)
-        clicked = click_if_exists(page, [
-            "button:has-text('Load More')",
-            "button:has-text('Load more')",
-            "a:has-text('Load More')",
-            "a:has-text('Load more')",
-        ], timeout_ms=1800)
-        if not clicked:
+def extract_single_event_page(soup: BeautifulSoup, base_url: str) -> list[Event]:
+    host = urlparse(base_url).netloc.replace("www.", "")
+    title = None
+    for selector in ["h1", "meta[property='og:title']", "title"]:
+        node = soup.select_one(selector)
+        if not node:
+            continue
+        if node.name == "meta":
+            title = normalize_whitespace(node.get("content", ""))
+        else:
+            title = normalize_whitespace(node.get_text(" "))
+        if title:
             break
-        page.wait_for_timeout(1000)
+    if not title:
+        return []
 
-    soup = BeautifulSoup(page.content(), "lxml")
-    events: List[RawEvent] = []
+    text = normalize_whitespace(soup.get_text(" "))[:5000]
+    if not looks_relevant(title + " " + text):
+        # still keep direct single-event pages even if not clearly nature-based;
+        # classifier can decide later.
+        pass
 
-    for a in soup.select("a[href*='/event/'], a[href*='/events/'], a[href*='/program/'], a[href*='/family-programs/'], a[href*='/adult-programs/'], a[href*='/camps/']"):
-        title = norm_ws(a.get_text(" "))
-        href = a.get("href") or ""
-        if not title or len(title) < 6:
-            continue
-
-        abs_url = safe_abs(url, href)
-
-        card = a
-        for _ in range(7):
-            if getattr(card, "parent", None):
-                card = card.parent
-
-        block = norm_ws(card.get_text(" ")) or ""
-        if len(block) < 20:
-            continue
-        block = block[:1400]
-
-        when_text = None
-        time_text = None
-        location_text = None
-        price_text = None
-
-        m = re.search(r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,60}\d{1,2}(?:[^0-9]{0,12}\d{4})?)", block, re.I)
+    date_guess = None
+    for pat in [
+        r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:,\s*\d{4})?(?:[^A-Za-z0-9]{1,10}\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)?",
+        r"\b\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2})?\b",
+        r"\b\d{1,2}/\d{1,2}/\d{2,4}\b",
+    ]:
+        m = re.search(pat, text, re.I)
         if m:
-            when_text = m.group(1)
+            date_guess = try_parse_date(m.group(0))
+            if date_guess:
+                break
 
-        tm = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}:\d{2}\s?(?:AM|PM))?)", block, re.I)
-        if tm:
-            time_text = tm.group(1)
+    return [Event(
+        title=title[:180],
+        start=date_guess,
+        end=None,
+        location=infer_location(text),
+        url=base_url,
+        source=host,
+        description=text[:900],
+    )]
 
-        lm = re.search(r"(Kortright Centre[^|•\n]{0,100}|9550 Pine Valley Drive[^|•\n]{0,100}|Woodbridge[^|•\n]{0,100}|Vaughan[^|•\n]{0,100})", block, re.I)
-        if lm:
-            location_text = norm_ws(lm.group(1))
 
-        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
-        if pm:
-            price_text = pm.group(1)
+def extract_events_for_site(url: str, html: str, kind: str) -> list[Event]:
+    soup = BeautifulSoup(html, "lxml")
+    if kind == "listing":
+        events = extract_event_cards(soup, url)
+        if events:
+            return events
+        return extract_single_event_page(soup, url)
+    return extract_single_event_page(soup, url) + extract_event_cards(soup, url)
 
-        events.append(RawEvent(
-            source=host(url),
-            title=title[:160],
-            url=abs_url,
-            when_text=norm_ws(when_text),
-            time_text=norm_ws(time_text),
-            location_text=norm_ws(location_text),
-            price_text=norm_ws(price_text),
-            description_text=block,
-        ))
 
-    uniq: Dict[tuple, RawEvent] = {}
+def dedupe_events(events: list[Event]) -> list[Event]:
+    dedup: dict[tuple[str, str, str], Event] = {}
     for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:250]
+        key = (e.title.lower(), e.start or "", e.url or "")
+        if key not in dedup:
+            dedup[key] = e
+    return list(dedup.values())
 
-# -------------------------
-# Site F: Evergreen
-# -------------------------
-def scrape_evergreen(page, url: str, max_clicks: int = 8) -> List[RawEvent]:
-    goto(page, url)
-    page.wait_for_timeout(1000)
-    try_accept_cookies(page)
 
-    for _ in range(max_clicks):
-        scroll_to_bottom_until_stable(page, max_rounds=2, pause_ms=700)
-        clicked = click_if_exists(page, [
-            "button:has-text('Load More')",
-            "button:has-text('Load more')",
-            "a:has-text('Load More')",
-            "a:has-text('Load more')",
-            "button:has-text('Show More')",
-        ], timeout_ms=1800)
-        if not clicked:
-            break
-        page.wait_for_timeout(1000)
+def classify_nature_and_teen(events: list[Event], batch_size: int = 25) -> list[Event]:
+    if not client or not events:
+        return events
 
-    soup = BeautifulSoup(page.content(), "lxml")
-    events: List[RawEvent] = []
-
-    for a in soup.select("a[href*='/whats-on/'], a[href*='/event/'], article a, section a"):
-        title = norm_ws(a.get_text(" "))
-        href = a.get("href") or ""
-        if not title or len(title) < 6:
-            continue
-
-        abs_url = safe_abs(url, href)
-
-        card = a
-        for _ in range(8):
-            if getattr(card, "parent", None):
-                card = card.parent
-
-        block = norm_ws(card.get_text(" ")) or ""
-        if len(block) < 20:
-            continue
-        block = block[:1400]
-
-        when_text = None
-        time_text = None
-        location_text = None
-        price_text = None
-        age_text = None
-
-        m = re.search(
-            r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,60}\d{1,2}(?:[^0-9]{0,12}\d{4})?|Every Saturday 9am-1pm|Weekdays from 4pm to dusk, weekends 8am to dusk|Visit page for dates and times|Saturdays and by request|All of April 2026|Weekends throughout September|Mondays to Fridays from October to June|Fall season: Oct - Dec)",
-            block,
-            re.I
-        )
-        if m:
-            when_text = m.group(1)
-
-        tm = re.search(r"(\b\d{1,2}(?::\d{2})?\s?(?:AM|PM|am|pm)\b(?:\s?[-–]\s?\d{1,2}(?::\d{2})?\s?(?:AM|PM|am|pm))?)", block, re.I)
-        if tm:
-            time_text = tm.group(1)
-
-        lm = re.search(r"(Evergreen Brick Works[^|•\n]{0,100}|Toronto[^|•\n]{0,100}|Bayview[^|•\n]{0,100})", block, re.I)
-        if lm:
-            location_text = norm_ws(lm.group(1))
-
-        pm = re.search(r"(\$\s?\d+(?:\.\d{2})?|\bFree\b)", block, re.I)
-        if pm:
-            price_text = pm.group(1)
-
-        am = re.search(r"(children aged\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\+|All ages welcome|kids|children|youth|teens?)", block, re.I)
-        if am:
-            age_text = am.group(1)
-
-        events.append(RawEvent(
-            source=host(url),
-            title=title[:160],
-            url=abs_url,
-            when_text=norm_ws(when_text),
-            time_text=norm_ws(time_text),
-            location_text=norm_ws(location_text),
-            price_text=norm_ws(price_text),
-            age_text=norm_ws(age_text),
-            description_text=block,
-        ))
-
-    uniq: Dict[tuple, RawEvent] = {}
-    for e in events:
-        k = (e.title.lower(), (e.url or "").lower())
-        if k not in uniq:
-            uniq[k] = e
-    return list(uniq.values())[:250]
-
-# -------------------------
-# Optional: Enrich by opening event detail pages
-# -------------------------
-def enrich_details(page, raw: RawEvent, timeout_ms: int = 45000) -> RawEvent:
-    if not raw.url:
-        return raw
-    try:
-        goto(page, raw.url, timeout_ms=timeout_ms)
-        page.wait_for_timeout(700)
-        try_accept_cookies(page)
-
-        soup = BeautifulSoup(page.content(), "lxml")
-        text = norm_ws(soup.get_text(" ")) or ""
-        text = text[:3500]
-
-        loc = raw.location_text
-        mloc = re.search(r"(Location|Where)\s*[:\-]\s*([^\n•|]{6,120})", text, re.I)
-        if mloc:
-            loc = norm_ws(mloc.group(2)) or loc
-
-        age = raw.age_text
-        mage = re.search(r"(All ages|Ages?\s*\d+\s*[-–]\s*\d+|Ages?\s*\d+\+|Family friendly|Youth|Teens?)", text, re.I)
-        if mage:
-            age = norm_ws(mage.group(0)) or age
-
-        price = raw.price_text
-        mprice = re.search(r"(\bFree\b|\$\s?\d+(?:\.\d{2})?)", text, re.I)
-        if mprice and not price:
-            price = mprice.group(1)
-
-        when = raw.when_text
-        mdate = re.search(r"(\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^|•\n]{0,50}\d{1,2}(?:[^0-9]{0,10}\d{4})?)", text, re.I)
-        if mdate and not when:
-            when = mdate.group(1)
-
-        ttxt = raw.time_text
-        mt = re.search(r"(\b\d{1,2}:\d{2}\s?(?:AM|PM)\b(?:\s?[-–]\s?\d{1,2}:\d{2}\s?(?:AM|PM))?)", text, re.I)
-        if mt and not ttxt:
-            ttxt = mt.group(1)
-
-        raw.when_text = norm_ws(when) or raw.when_text
-        raw.time_text = norm_ws(ttxt) or raw.time_text
-        raw.location_text = norm_ws(loc) or raw.location_text
-        raw.price_text = norm_ws(price) or raw.price_text
-        raw.age_text = norm_ws(age) or raw.age_text
-
-        if not raw.description_text:
-            raw.description_text = text[:900]
-        return raw
-    except Exception:
-        return raw
-
-# -------------------------
-# OpenAI normalize + filter
-# -------------------------
-def ai_normalize_and_filter(batch: List[RawEvent]) -> List[NormalizedEvent]:
-    c = get_client()
-
-    payload = [{
-        "source": e.source,
-        "title": e.title,
-        "url": e.url,
-        "when_text": e.when_text,
-        "time_text": e.time_text,
-        "location_text": e.location_text,
-        "venue_text": e.venue_text,
-        "price_text": e.price_text,
-        "age_text": e.age_text,
-        "description_text": e.description_text,
-    } for e in batch]
-
-    schema = {
-        "type": "object",
-        "properties": {
-            "results": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "title": {"type": "string"},
-                        "source": {"type": "string"},
-                        "url": {"type": ["string", "null"]},
-                        "start": {"type": ["string", "null"]},
-                        "end": {"type": ["string", "null"]},
-                        "location": {"type": ["string", "null"]},
-                        "venue": {"type": ["string", "null"]},
-                        "price": {"type": ["string", "null"]},
-                        "age_info": {"type": ["string", "null"]},
-                        "description": {"type": ["string", "null"]},
-                        "tags": {"type": "array", "items": {"type": "string"}},
-                        "nature_based": {"type": "boolean"},
-                        "teen_ok_13_17": {"type": "boolean"},
-                        "nature_reason": {"type": "string"},
-                        "teen_reason": {"type": "string"},
-                    },
-                    "required": [
-                        "title", "source", "url", "start", "end", "location", "venue", "price", "age_info",
-                        "description", "tags", "nature_based", "teen_ok_13_17", "nature_reason", "teen_reason"
-                    ],
-                    "additionalProperties": False,
-                },
+    for i in range(0, len(events), batch_size):
+        group = events[i:i + batch_size]
+        payload = [
+            {
+                "title": e.title,
+                "start": e.start,
+                "location": e.location,
+                "url": e.url,
+                "source": e.source,
+                "description": e.description,
             }
-        },
-        "required": ["results"],
-        "additionalProperties": False,
-    }
+            for e in group
+        ]
 
-    resp = c.responses.create(
-        model="gpt-4.1-mini",
-        input=[
-            {"role": "system", "content":
-                "You normalize event info and classify:\n"
-                "1) nature_based: outdoors/nature (parks, trails, conservation, wildlife, gardening, hiking, paddling, birding, outdoor volunteering/education)\n"
-                "2) teen_ok_13_17: suitable for ages 13–17 (safe; not 18+/nightlife/alcohol/casino/explicit)\n"
-                "Return strict JSON only matching the schema.\n"
-                "Dates: output ISO strings if you can; if unsure keep null.\n"
-                "If time missing but date exists, output start as YYYY-MM-DD."
+        resp = client.responses.create(
+            model="gpt-4.1-mini",
+            input=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Classify events for a youth nature-events calendar. "
+                        "nature_based=true only for outdoors, parks, trails, conservation, wildlife, tree planting, gardening, hikes, environmental volunteering, eco education, camping, birding, forestry, zoo, ravine or similar nature activities. "
+                        "teen_ok_13_17=true only when it appears safe/appropriate for ages 13-17 or clearly family/all-ages/youth. "
+                        "Return strict JSON only."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": json.dumps({
+                        "events": payload,
+                        "task": "For each event, set nature_based, teen_ok_13_17, a short nature_reason, a short teen_reason, and 1-4 tags."
+                    }, ensure_ascii=False),
+                },
+            ],
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "event_classification",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "results": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": {"type": "string"},
+                                        "source": {"type": "string"},
+                                        "url": {"type": ["string", "null"]},
+                                        "nature_based": {"type": "boolean"},
+                                        "teen_ok_13_17": {"type": "boolean"},
+                                        "nature_reason": {"type": "string"},
+                                        "teen_reason": {"type": "string"},
+                                        "tags": {"type": "array", "items": {"type": "string"}},
+                                    },
+                                    "required": [
+                                        "title", "source", "url", "nature_based", "teen_ok_13_17",
+                                        "nature_reason", "teen_reason", "tags"
+                                    ],
+                                    "additionalProperties": False,
+                                },
+                            }
+                        },
+                        "required": ["results"],
+                        "additionalProperties": False,
+                    },
+                }
             },
-            {"role": "user", "content": json.dumps({
-                "task": "Normalize each event and classify nature_based + teen_ok_13_17. Keep tags short.",
-                "events": payload
-            }, ensure_ascii=False)}
-        ],
-        text={"format": {
-            "type": "json_schema",
-            "name": "normalized_events",
-            "schema": schema
-        }}
-    )
-
-    data = json.loads(resp.output_text)
-    out: List[NormalizedEvent] = []
-    for r in data.get("results", []):
-        out.append(NormalizedEvent(
-            title=r["title"],
-            start=r["start"],
-            end=r["end"],
-            url=r["url"],
-            location=r["location"],
-            venue=r["venue"],
-            source=r["source"],
-            price=r["price"],
-            age_info=r["age_info"],
-            description=r["description"],
-            tags=(r["tags"] or [])[:6],
-            nature_based=bool(r["nature_based"]),
-            teen_ok_13_17=bool(r["teen_ok_13_17"]),
-            teen_reason=(r["teen_reason"] or "")[:240],
-            nature_reason=(r["nature_reason"] or "")[:240],
-        ))
-    return out
-
-def to_fullcalendar_json(evts: List[NormalizedEvent]) -> List[Dict[str, Any]]:
-    return [{
-        "title": e.title,
-        "start": e.start,
-        "end": e.end,
-        "url": e.url,
-        "extendedProps": {
-            "location": e.location,
-            "venue": e.venue,
-            "source": e.source,
-            "price": e.price,
-            "age_info": e.age_info,
-            "tags": e.tags,
-            "nature_reason": e.nature_reason,
-            "teen_reason": e.teen_reason,
-            "description": e.description,
-        }
-    } for e in evts]
-
-# -------------------------
-# Main
-# -------------------------
-def main():
-    all_raw: List[RawEvent] = []
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context(
-            user_agent=COMMON_UA,
-            viewport={"width": 1280, "height": 800},
-            locale="en-CA",
         )
-        page = context.new_page()
 
-        for url in SITES:
-            print("Scraping:", url)
-            try:
-                if "trca.ca" in url:
-                    raw = scrape_trca(page, url)
-                elif "eventbrite" in url:
-                    raw = scrape_eventbrite(page, url)
-                elif "visitvaughan.ca" in url:
-                    raw = scrape_visitvaughan(page, url, months_forward=3)
-                elif "childslife.ca" in url:
-                    raw = scrape_childslife(page, url)
-                elif "kortright.org" in url:
-                    raw = scrape_kortright(page, url)
-                elif "evergreen.ca" in url:
-                    raw = scrape_evergreen(page, url)
-                else:
-                    raw = []
-                print("  candidates:", len(raw))
-                all_raw.extend(raw)
-            except PWTimeout as ex:
-                print("  FAILED timeout:", ex)
-            except Exception as ex:
-                print("  FAILED:", ex)
+        data = json.loads(resp.output_text)
+        lookup = {(r["title"].strip().lower(), (r.get("url") or "").strip()): r for r in data["results"]}
+        for e in group:
+            r = lookup.get((e.title.strip().lower(), (e.url or "").strip()))
+            if not r:
+                continue
+            e.nature_based = bool(r["nature_based"])
+            e.teen_ok_13_17 = bool(r["teen_ok_13_17"])
+            e.nature_reason = r["nature_reason"][:220]
+            e.teen_reason = r["teen_reason"][:220]
+            e.nature_tags = [t[:24] for t in (r.get("tags") or [])][:4]
 
-        uniq: Dict[tuple, RawEvent] = {}
-        for e in all_raw:
-            k = (e.source, e.title.lower(), (e.url or "").lower())
-            if k not in uniq:
-                uniq[k] = e
-        all_raw = list(uniq.values())
-        print("Total candidates:", len(all_raw))
+    return events
 
-        with open("raw_candidates.json", "w", encoding="utf-8") as f:
-            json.dump([asdict(e) for e in all_raw], f, ensure_ascii=False, indent=2)
-        print("Saved raw_candidates.json:", len(all_raw))
 
-        ENRICH_N = min(80, len(all_raw))
-        for i in range(ENRICH_N):
-            all_raw[i] = enrich_details(page, all_raw[i])
+def main():
+    all_events: list[Event] = []
 
-        browser.close()
+    for site in SITE_CONFIGS:
+        url = site["url"]
+        print(f"Scraping: {url}")
+        try:
+            html = render_page_html(url)
+            events = extract_events_for_site(url, html, site["kind"])
+            print(f"  found ~{len(events)} candidates")
+            all_events.extend(events)
+        except PlaywrightTimeoutError as ex:
+            print(f"  TIMEOUT: {ex}")
+        except Exception as ex:
+            print(f"  FAILED: {ex}")
 
-    normalized: List[NormalizedEvent] = []
-    BATCH = 25
-    for i in range(0, len(all_raw), BATCH):
-        chunk = all_raw[i:i+BATCH]
-        normed = ai_normalize_and_filter(chunk)
-        normalized.extend(normed)
+    all_events = dedupe_events(all_events)
+    print(f"Total unique candidates: {len(all_events)}")
 
-    final = [e for e in normalized if e.nature_based and e.teen_ok_13_17]
+    # Save raw scrape before classification
+    with open("all_events_raw.json", "w", encoding="utf-8") as f:
+        json.dump([
+            {
+                "title": e.title,
+                "start": e.start,
+                "end": e.end,
+                "location": e.location,
+                "url": e.url,
+                "source": e.source,
+                "description": e.description,
+            }
+            for e in all_events
+        ], f, ensure_ascii=False, indent=2)
+    print("Wrote all_events_raw.json")
 
-    if not final:
-        print("Warning: 0 final events after filtering. (Could be overly strict or site blocking.)")
+    classified = classify_nature_and_teen(all_events)
+    filtered = [e for e in classified if e.nature_based is True and (e.teen_ok_13_17 is not False)]
+    print(f"Filtered nature/youth events: {len(filtered)}")
 
-    payload = to_fullcalendar_json(final)
-    with open(OUT_JSON, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+    website_json = []
+    for e in filtered:
+        website_json.append({
+            "title": e.title,
+            "start": e.start,
+            "end": e.end,
+            "url": e.url,
+            "extendedProps": {
+                "location": e.location,
+                "source": e.source,
+                "nature_reason": e.nature_reason,
+                "teen_reason": e.teen_reason,
+                "tags": e.nature_tags or [],
+            },
+        })
 
-    print("Wrote:", OUT_JSON, "events:", len(payload))
+    with open("nature_events.json", "w", encoding="utf-8") as f:
+        json.dump(website_json, f, ensure_ascii=False, indent=2)
+    print("Wrote nature_events.json")
+
 
 if __name__ == "__main__":
     main()
