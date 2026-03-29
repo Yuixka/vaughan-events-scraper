@@ -3,7 +3,7 @@ import re
 import json
 from dataclasses import dataclass
 from urllib.parse import urljoin, urlparse
-from typing import Optional, List, Dict, Any
+from typing import Optional, Any
 
 from bs4 import BeautifulSoup
 from dateutil import parser as dtparser
@@ -13,9 +13,12 @@ from openai import OpenAI
 # -------- CONFIG --------
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+DEBUG_DIR = os.environ.get("SCRAPER_DEBUG_DIR", "scrape_debug")
+SAVE_DEBUG_HTML = os.environ.get("SAVE_DEBUG_HTML", "1") == "1"
+MAX_PAGINATION_CLICKS = int(os.environ.get("MAX_PAGINATION_CLICKS", "20"))
+SCROLL_PASSES = int(os.environ.get("SCROLL_PASSES", "12"))
 
 SITE_CONFIGS: list[dict[str, Any]] = [
-    # Main calendar/listing sources from the PDF
     {"url": "https://trca.ca/events-calendar/", "kind": "listing", "tags": ["nature", "toronto", "vaughan"]},
     {"url": "https://visitvaughan.ca/calendar/", "kind": "listing", "tags": ["vaughan"]},
     {"url": "https://childslife.ca/events/category/kids-programs-and-workshops/nature-wildlife-programs/", "kind": "listing", "tags": ["nature", "kids"]},
@@ -50,8 +53,6 @@ SITE_CONFIGS: list[dict[str, Any]] = [
     {"url": "https://torontofieldnaturalists.org", "kind": "listing", "tags": ["nature walks", "wildlife"]},
     {"url": "https://www.toronto.ca/explore-enjoy/parks-recreation/places-spaces/parks-and-recreation-facilities/", "kind": "listing", "tags": ["parks"]},
     {"url": "https://stridestoronto.ca/program-service/whats-up-walk-in/", "kind": "single_or_listing", "tags": ["mental health", "youth"]},
-
-    # Existing sources already present in your code
     {"url": "https://www.eventbrite.ca/d/canada--vaughan/events/", "kind": "listing", "tags": ["eventbrite", "vaughan"]},
     {"url": "https://www.vaughanpl.info/events_calendars/calendar", "kind": "listing", "tags": ["library", "calendar"]},
     {"url": "https://www.vaughan.ca/upcoming-events", "kind": "listing", "tags": ["vaughan"]},
@@ -68,7 +69,8 @@ POSITIVE_KEYWORDS = {
 }
 NEGATIVE_KEYWORDS = {
     "casino", "nightclub", "nightlife", "bar", "cocktail", "networking", "sales", "real estate",
-    "business expo", "conference", "wedding show", "marketplace"}
+    "business expo", "conference", "wedding show", "marketplace"
+}
 YOUTH_HINTS = {"teen", "teens", "youth", "13-17", "12-25", "family", "all ages", "student"}
 LOCATION_HINTS = {"vaughan", "woodbridge", "maple", "thornhill", "richmond hill", "york", "toronto", "scarborough", "brampton", "hamilton"}
 
@@ -91,6 +93,11 @@ class Event:
 
 def normalize_whitespace(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
+
+
+def safe_slug(text: str) -> str:
+    text = re.sub(r"[^a-zA-Z0-9]+", "_", text).strip("_").lower()
+    return text[:80] or "site"
 
 
 def try_parse_date(text: str) -> Optional[str]:
@@ -123,66 +130,137 @@ def looks_relevant(text: str) -> bool:
 
 
 def accept_cookies(page):
-    labels = [
-        "Accept", "I agree", "Got it", "Allow all", "Accept All", "Accept all", "Agree"
+    selectors = [
+        "button:has-text('Accept')",
+        "button:has-text('I agree')",
+        "button:has-text('Got it')",
+        "button:has-text('Allow all')",
+        "button:has-text('Accept All')",
+        "button:has-text('Accept all')",
+        "button:has-text('Agree')",
+        "button:has-text('OK')",
+        "button:has-text('Ok')",
+        "button:has-text('Continue')",
+        "a:has-text('Accept')",
+        "a:has-text('I agree')",
+        "[id*='accept']",
+        "[class*='accept']",
+        "#onetrust-accept-btn-handler",
+        ".onetrust-accept-btn-handler",
     ]
-    for label in labels:
+    for selector in selectors:
         try:
-            btn = page.locator(f"button:has-text('{label}')").first
-            if btn.count() > 0:
-                btn.click(timeout=1500)
-                page.wait_for_timeout(500)
-                return
+            el = page.locator(selector).first
+            if el.count() > 0 and el.is_visible():
+                el.click(timeout=2000)
+                page.wait_for_timeout(800)
+                return True
         except Exception:
-            pass
+            continue
+    return False
 
 
-def click_load_more(page):
+def scroll_to_bottom_until_stable(page, passes: int = SCROLL_PASSES):
+    last_height = -1
+    stable_rounds = 0
+    for _ in range(passes):
+        try:
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        except Exception:
+            page.mouse.wheel(0, 2200)
+        page.wait_for_timeout(1200)
+        try:
+            new_height = page.evaluate("document.body.scrollHeight")
+        except Exception:
+            new_height = None
+        if new_height == last_height:
+            stable_rounds += 1
+        else:
+            stable_rounds = 0
+            last_height = new_height
+        if stable_rounds >= 2:
+            break
+
+
+def click_pagination_until_done(page):
     selectors = [
         "button:has-text('Load more')",
         "button:has-text('Load More')",
         "a:has-text('Load more')",
         "a:has-text('Load More')",
+        "button:has-text('Show more')",
+        "a:has-text('Show more')",
         "button:has-text('More')",
-        "a:has-text('Next')",
         "button:has-text('Next')",
+        "a:has-text('Next')",
         "[aria-label='Next']",
+        "[aria-label='next']",
         ".pagination-next a",
         ".next a",
+        ".load-more",
+        ".btn-load-more",
     ]
-    clicked = 0
-    for _ in range(10):
+    clicks = 0
+    for _ in range(MAX_PAGINATION_CLICKS):
         did_click = False
         for selector in selectors:
             try:
                 el = page.locator(selector).first
-                if el.count() > 0 and el.is_visible():
-                    el.click(timeout=2000)
-                    page.wait_for_timeout(1200)
-                    did_click = True
-                    clicked += 1
-                    break
+                if el.count() == 0 or not el.is_visible():
+                    continue
+                el.scroll_into_view_if_needed(timeout=1500)
+                el.click(timeout=2500)
+                page.wait_for_load_state("domcontentloaded", timeout=5000)
+                page.wait_for_timeout(1800)
+                scroll_to_bottom_until_stable(page, passes=4)
+                did_click = True
+                clicks += 1
+                break
             except Exception:
                 continue
         if not did_click:
             break
-    return clicked
+    return clicks
 
 
-def render_page_html(url: str, timeout_ms: int = 90000) -> str:
+def render_page_html(url: str, timeout_ms: int = 120000) -> str:
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page(viewport={"width": 1440, "height": 2200})
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+            ],
+        )
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/122.0.0.0 Safari/537.36"
+            ),
+            viewport={"width": 1440, "height": 2200},
+            locale="en-CA",
+            timezone_id="America/Toronto",
+            java_script_enabled=True,
+            extra_http_headers={
+                "Accept-Language": "en-CA,en-US;q=0.9,en;q=0.8",
+                "Upgrade-Insecure-Requests": "1",
+            },
+        )
+        page = context.new_page()
+        page.set_default_timeout(12000)
+        page.set_default_navigation_timeout(timeout_ms)
         try:
             page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
-            page.wait_for_timeout(1500)
+            page.wait_for_timeout(2500)
             accept_cookies(page)
-            for _ in range(6):
-                page.mouse.wheel(0, 1500)
-                page.wait_for_timeout(350)
-            click_load_more(page)
+            scroll_to_bottom_until_stable(page)
+            click_pagination_until_done(page)
+            page.wait_for_timeout(2000)
             html = page.content()
         finally:
+            context.close()
             browser.close()
     return html
 
@@ -194,7 +272,8 @@ def extract_event_cards(soup: BeautifulSoup, base_url: str) -> list[Event]:
 
     card_selectors = [
         "article", ".event", ".events-card", ".tribe-events-event", ".event-card",
-        ".calendar-event", ".search-result", ".listing", ".views-row", ".program-item"
+        ".calendar-event", ".search-result", ".listing", ".views-row", ".program-item",
+        ".event-item", ".post", ".card", ".result", ".entry"
     ]
 
     candidate_nodes = []
@@ -203,16 +282,16 @@ def extract_event_cards(soup: BeautifulSoup, base_url: str) -> list[Event]:
     if not candidate_nodes:
         candidate_nodes = list(soup.select("a[href]"))
 
-    for node in candidate_nodes[:500]:
+    for node in candidate_nodes[:800]:
         a = node if getattr(node, "name", "") == "a" else node.select_one("a[href]")
         if not a:
             continue
         href = (a.get("href") or "").strip()
         title = normalize_whitespace(a.get_text(" "))
-        if not href or not title:
+        if not href or not title or len(title) < 4:
             continue
         full_url = urljoin(base_url, href)
-        block_text = normalize_whitespace(node.get_text(" "))[:1500]
+        block_text = normalize_whitespace(node.get_text(" "))[:2000]
         if not looks_relevant(block_text + " " + title):
             continue
 
@@ -265,10 +344,6 @@ def extract_single_event_page(soup: BeautifulSoup, base_url: str) -> list[Event]
         return []
 
     text = normalize_whitespace(soup.get_text(" "))[:5000]
-    if not looks_relevant(title + " " + text):
-        # still keep direct single-event pages even if not clearly nature-based;
-        # classifier can decide later.
-        pass
 
     date_guess = None
     for pat in [
@@ -402,25 +477,58 @@ def classify_nature_and_teen(events: list[Event], batch_size: int = 25) -> list[
 
 
 def main():
+    os.makedirs(DEBUG_DIR, exist_ok=True)
     all_events: list[Event] = []
+    site_summaries: list[dict[str, Any]] = []
 
     for site in SITE_CONFIGS:
         url = site["url"]
+        slug = safe_slug(urlparse(url).netloc + "_" + urlparse(url).path)
         print(f"Scraping: {url}")
         try:
             html = render_page_html(url)
+            if SAVE_DEBUG_HTML:
+                with open(os.path.join(DEBUG_DIR, f"{slug}.html"), "w", encoding="utf-8") as f:
+                    f.write(html)
+
             events = extract_events_for_site(url, html, site["kind"])
+            events = dedupe_events(events)
             print(f"  found ~{len(events)} candidates")
             all_events.extend(events)
+
+            with open(os.path.join(DEBUG_DIR, f"{slug}.json"), "w", encoding="utf-8") as f:
+                json.dump([
+                    {
+                        "title": e.title,
+                        "start": e.start,
+                        "location": e.location,
+                        "url": e.url,
+                        "source": e.source,
+                        "description": e.description,
+                    }
+                    for e in events
+                ], f, ensure_ascii=False, indent=2)
+
+            site_summaries.append({
+                "url": url,
+                "kind": site["kind"],
+                "candidate_count": len(events),
+                "status": "ok",
+            })
         except PlaywrightTimeoutError as ex:
             print(f"  TIMEOUT: {ex}")
+            site_summaries.append({"url": url, "kind": site["kind"], "candidate_count": 0, "status": f"timeout: {ex}"})
         except Exception as ex:
             print(f"  FAILED: {ex}")
+            site_summaries.append({"url": url, "kind": site["kind"], "candidate_count": 0, "status": f"failed: {ex}"})
 
     all_events = dedupe_events(all_events)
     print(f"Total unique candidates: {len(all_events)}")
 
-    # Save raw scrape before classification
+    with open("site_counts.json", "w", encoding="utf-8") as f:
+        json.dump(site_summaries, f, ensure_ascii=False, indent=2)
+    print("Wrote site_counts.json")
+
     with open("all_events_raw.json", "w", encoding="utf-8") as f:
         json.dump([
             {
