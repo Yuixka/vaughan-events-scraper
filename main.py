@@ -630,6 +630,7 @@ def main():
                 "--disable-blink-features=AutomationControlled",
             ],
         )
+
         context = new_context(browser)
 
         for site in SITE_CONFIGS:
@@ -651,7 +652,6 @@ def main():
                         f.write(html)
 
                 soup = BeautifulSoup(html, "lxml")
-
                 events = site_specific_extract(url, html)
 
                 if site["kind"] != "listing" and not timed_out(site_deadline):
@@ -666,8 +666,7 @@ def main():
 
                 elapsed = round(now_monotonic() - site_started, 1)
                 status = "ok" if elapsed < MAX_SITE_SECONDS else "partial_timeout"
-
-                print(f"  found ~{len(events)} candidates in {elapsed}s [{status}]")
+                print(f" found ~{len(events)} candidates in {elapsed}s [{status}]")
 
                 all_events.extend(events)
                 site_counts.append({
@@ -685,7 +684,7 @@ def main():
 
             except Exception as ex:
                 elapsed = round(now_monotonic() - site_started, 1)
-                print(f"  FAILED after {elapsed}s: {ex}")
+                print(f" FAILED after {elapsed}s: {ex}")
                 site_counts.append({
                     "url": url,
                     "candidate_count": 0,
@@ -699,15 +698,14 @@ def main():
     all_events = dedupe(all_events)
 
     write_json("site_counts.json", site_counts)
-    write_json("all_events_raw.json", [e.__dict__ for e in all_events])
-
+    write_json("raw_candidates.json", [e.__dict__ for e in all_events])
     print(f"Total unique candidates: {len(all_events)}")
 
     classified = classify(all_events)
     filtered = [e for e in classified if e.nature_based is True and e.teen_ok_13_17 is not False]
 
     write_json(
-        "nature_events.json",
+        "nature_teens_events.json",
         [
             {
                 "title": e.title,
@@ -727,7 +725,8 @@ def main():
     )
 
     print(f"Filtered nature/youth events: {len(filtered)}")
-    print("Wrote nature_events.json")
+    print("Wrote raw_candidates.json")
+    print("Wrote nature_teens_events.json")
 
 
 if __name__ == "__main__":
