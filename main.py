@@ -8,20 +8,44 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 from dateutil import parser as dtparser
-from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright
 from openai import OpenAI
+
+# =========================
+# ENV / RUNTIME SETTINGS
+# =========================
+
+IS_GITHUB_ACTIONS = os.environ.get("GITHUB_ACTIONS", "").lower() == "true"
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
 DEBUG_DIR = os.environ.get("SCRAPER_DEBUG_DIR", "scrape_debug")
-SAVE_DEBUG = os.environ.get("SAVE_DEBUG_HTML", "1") == "1"
+
+# In GitHub Actions, default debug saving OFF unless explicitly enabled
+SAVE_DEBUG = os.environ.get("SAVE_DEBUG_HTML", "0" if IS_GITHUB_ACTIONS else "1") == "1"
 HEADLESS = os.environ.get("HEADLESS", "1") == "1"
-MAX_DETAIL_PAGES_PER_SITE = int(os.environ.get("MAX_DETAIL_PAGES_PER_SITE", "40"))
-MAX_SCROLL_CYCLES = int(os.environ.get("MAX_SCROLL_CYCLES", "8"))
-MAX_PAGINATION_CLICKS = int(os.environ.get("MAX_PAGINATION_CLICKS", "6"))
-MAX_GOTO_TIMEOUT_MS = int(os.environ.get("MAX_GOTO_TIMEOUT_MS", "60000"))
-MAX_PAGE_TOTAL_MS = int(os.environ.get("MAX_PAGE_TOTAL_MS", "90000"))
-MAX_SITE_SECONDS = int(os.environ.get("MAX_SITE_SECONDS", "120"))
+
+# Much tighter defaults for CI
+MAX_DETAIL_PAGES_PER_SITE = int(
+    os.environ.get("MAX_DETAIL_PAGES_PER_SITE", "8" if IS_GITHUB_ACTIONS else "20")
+)
+MAX_SCROLL_CYCLES = int(
+    os.environ.get("MAX_SCROLL_CYCLES", "4" if IS_GITHUB_ACTIONS else "7")
+)
+MAX_PAGINATION_CLICKS = int(
+    os.environ.get("MAX_PAGINATION_CLICKS", "3" if IS_GITHUB_ACTIONS else "5")
+)
+MAX_GOTO_TIMEOUT_MS = int(
+    os.environ.get("MAX_GOTO_TIMEOUT_MS", "20000" if IS_GITHUB_ACTIONS else "45000")
+)
+MAX_PAGE_TOTAL_MS = int(
+    os.environ.get("MAX_PAGE_TOTAL_MS", "30000" if IS_GITHUB_ACTIONS else "60000")
+)
+MAX_SITE_SECONDS = int(
+    os.environ.get("MAX_SITE_SECONDS", "45" if IS_GITHUB_ACTIONS else "90")
+)
+CLASSIFY_BATCH_SIZE = int(os.environ.get("CLASSIFY_BATCH_SIZE", "20"))
 
 SITE_CONFIGS: list[dict[str, Any]] = [
     {"url": "https://trca.ca/events-calendar/", "kind": "listing"},
@@ -73,6 +97,7 @@ POSITIVE_HINTS = [
     "volunteer", "volunteering", "eco", "environment", "butterfly", "naturalist", "forestry",
     "green", "community planting", "watershed"
 ]
+
 DATE_PATTERNS = [
     r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:,\s*\d{4})?(?:[^A-Za-z0-9]{1,15}\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)?",
     r"\b\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2})?\b",
@@ -102,6 +127,24 @@ def norm(s: str) -> str:
 
 def slugify(url: str) -> str:
     return re.sub(r"[^a-zA-Z0-9]+", "_", url).strip("_").lower()[:120]
+
+
+def now_monotonic() -> float:
+    return time.monotonic()
+
+
+def seconds_left(deadline: Optional[float]) -> float:
+    if deadline is None:
+        return 999999.0
+    return max(0.0, deadline - now_monotonic())
+
+
+def ms_left(deadline: Optional[float]) -> int:
+    return max(1, int(seconds_left(deadline) * 1000))
+
+
+def timed_out(deadline: Optional[float]) -> bool:
+    return deadline is not None and now_monotonic() >= deadline
 
 
 def try_parse_date(text: str) -> Optional[str]:
@@ -160,7 +203,7 @@ def event_title_from_node(node) -> str:
     return norm(a.get_text(" ")) if a else ""
 
 
-def accept_cookies(page):
+def accept_cookies(page, deadline: Optional[float] = None) -> bool:
     selectors = [
         "#onetrust-accept-btn-handler", ".onetrust-accept-btn-handler",
         "button:has-text('Accept')", "button:has-text('Accept All')", "button:has-text('Accept all')",
@@ -168,72 +211,85 @@ def accept_cookies(page):
         "button:has-text('Continue')", "a:has-text('Accept')"
     ]
     for sel in selectors:
+        if timed_out(deadline):
+            return False
         try:
             loc = page.locator(sel).first
             if loc.count() and loc.is_visible():
-                loc.click(timeout=2500)
-                page.wait_for_timeout(1000)
+                loc.click(timeout=min(2500, ms_left(deadline)))
+                page.wait_for_timeout(min(800, ms_left(deadline)))
                 return True
         except Exception:
             pass
     return False
 
 
-def hydrate_page(page):
-    start = time.monotonic()
-    accept_cookies(page)
+def hydrate_page(page, deadline: Optional[float] = None) -> None:
+    if timed_out(deadline):
+        return
+
+    accept_cookies(page, deadline=deadline)
 
     stable_rounds = 0
     last_height = -1
+
     for _ in range(MAX_SCROLL_CYCLES):
-        if (time.monotonic() - start) * 1000 > MAX_PAGE_TOTAL_MS:
+        if timed_out(deadline):
             break
         try:
-            page.mouse.wheel(0, 2200)
+            page.mouse.wheel(0, 1800)
         except Exception:
             try:
-                page.evaluate("window.scrollBy(0, 2200)")
+                page.evaluate("window.scrollBy(0, 1800)")
             except Exception:
                 pass
+
         try:
-            page.wait_for_timeout(700)
+            page.wait_for_timeout(min(600, ms_left(deadline)))
             height = page.evaluate("document.body ? document.body.scrollHeight : 0")
         except Exception:
             height = last_height
+
         if height == last_height:
             stable_rounds += 1
         else:
             stable_rounds = 0
         last_height = height
+
         if stable_rounds >= 2:
             break
 
     for _ in range(MAX_PAGINATION_CLICKS):
-        if (time.monotonic() - start) * 1000 > MAX_PAGE_TOTAL_MS:
+        if timed_out(deadline):
             break
+
         clicked = False
         for sel in [
             "button:has-text('Load more')", "button:has-text('Load More')", "a:has-text('Load more')",
             "button:has-text('Show more')", "a:has-text('Show more')", "button:has-text('Next')",
             "a:has-text('Next')", "[aria-label='Next']", ".load-more", ".pagination-next a"
         ]:
+            if timed_out(deadline):
+                break
             try:
                 loc = page.locator(sel).first
                 if loc.count() and loc.is_visible():
-                    loc.scroll_into_view_if_needed(timeout=1200)
-                    loc.click(timeout=2000)
-                    page.wait_for_timeout(1200)
+                    loc.scroll_into_view_if_needed(timeout=min(1200, ms_left(deadline)))
+                    loc.click(timeout=min(1800, ms_left(deadline)))
+                    page.wait_for_timeout(min(900, ms_left(deadline)))
                     clicked = True
                     break
             except Exception:
                 pass
+
         if not clicked:
             break
 
-    try:
-        page.wait_for_timeout(1000)
-    except Exception:
-        pass
+    if not timed_out(deadline):
+        try:
+            page.wait_for_timeout(min(700, ms_left(deadline)))
+        except Exception:
+            pass
 
 
 def new_context(browser):
@@ -243,7 +299,7 @@ def new_context(browser):
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/122.0.0.0 Safari/537.36"
         ),
-        viewport={"width": 1440, "height": 2400},
+        viewport={"width": 1440, "height": 2200},
         locale="en-CA",
         timezone_id="America/Toronto",
         java_script_enabled=True,
@@ -251,67 +307,73 @@ def new_context(browser):
     )
 
 
-def fetch_html(context, url: str) -> str:
+def fetch_html(context, url: str, deadline: Optional[float] = None) -> str:
+    if timed_out(deadline):
+        raise TimeoutError(f"Skipped {url}: site deadline reached before fetch")
+
     page = context.new_page()
-    page.set_default_timeout(12000)
-    page.set_default_navigation_timeout(MAX_GOTO_TIMEOUT_MS)
-    last_error = None
-    started = time.monotonic()
-    for wait_until in ["domcontentloaded", "load"]:
-        try:
-            if (time.monotonic() - started) * 1000 > MAX_PAGE_TOTAL_MS:
-                raise TimeoutError(f"page budget exceeded for {url}")
-            page.goto(url, wait_until=wait_until, timeout=MAX_GOTO_TIMEOUT_MS)
-            hydrate_page(page)
-            html = page.content()
-            page.close()
-            return html
-        except Exception as ex:
-            last_error = ex
-            try:
-                page.wait_for_timeout(1200)
-            except Exception:
-                pass
     try:
-        html = page.content()
+        effective_timeout = min(MAX_GOTO_TIMEOUT_MS, ms_left(deadline), MAX_PAGE_TOTAL_MS)
+        page.set_default_timeout(min(12000, effective_timeout))
+        page.set_default_navigation_timeout(effective_timeout)
+
+        for wait_until in ["domcontentloaded", "load"]:
+            if timed_out(deadline):
+                raise TimeoutError(f"Skipped {url}: site deadline reached during fetch")
+
+            try:
+                goto_timeout = min(MAX_GOTO_TIMEOUT_MS, ms_left(deadline))
+                page.goto(url, wait_until=wait_until, timeout=goto_timeout)
+                hydrate_page(page, deadline=deadline)
+                return page.content()
+            except Exception:
+                continue
+
+        return page.content()
+    finally:
         page.close()
-        return html
-    except Exception:
-        page.close()
-        raise last_error
 
 
 def generic_listing_extract(soup: BeautifulSoup, base_url: str) -> list[Event]:
     host = urlparse(base_url).netloc.replace("www.", "")
     nodes = []
+
     for sel in [
         "article", ".event", ".tribe-events-calendar-list__event-row", ".tribe-common-g-row",
         ".event-card", ".card", ".views-row", ".program-item", ".entry", ".listing", ".result"
     ]:
         nodes.extend(soup.select(sel))
+
     if not nodes:
         nodes = list(soup.select("a[href]"))
 
     results: list[Event] = []
     seen: set[tuple[str, str]] = set()
+
     for node in nodes[:1500]:
         a = node if getattr(node, "name", "") == "a" else node.select_one("a[href]")
         if not a:
             continue
+
         href = (a.get("href") or "").strip()
         if not href:
             continue
+
         title = event_title_from_node(node) or norm(a.get_text(" "))
         if len(title) < 4:
             continue
+
         full = urljoin(base_url, href)
         text = norm(node.get_text(" "))[:3000]
+
         if not relevant_text(text + " " + title) and "/event" not in full and "/events" not in full:
             continue
+
         key = (title.lower(), full)
         if key in seen:
             continue
         seen.add(key)
+
         results.append(Event(
             title=title[:180],
             start=first_date(text),
@@ -321,12 +383,14 @@ def generic_listing_extract(soup: BeautifulSoup, base_url: str) -> list[Event]:
             source=host,
             description=text[:1000] or None,
         ))
+
     return results
 
 
 def single_page_extract(soup: BeautifulSoup, url: str) -> list[Event]:
     host = urlparse(url).netloc.replace("www.", "")
     title = ""
+
     for sel in ["h1", ".entry-title", ".page-title", "title", "meta[property='og:title']"]:
         el = soup.select_one(sel)
         if not el:
@@ -334,8 +398,10 @@ def single_page_extract(soup: BeautifulSoup, url: str) -> list[Event]:
         title = norm(el.get("content")) if el.name == "meta" else norm(el.get_text(" "))
         if title:
             break
+
     if len(title) < 4:
         return []
+
     text = norm(soup.get_text(" "))[:7000]
     return [Event(
         title=title[:180],
@@ -365,21 +431,34 @@ def site_specific_extract(url: str, html: str) -> list[Event]:
     if "eventbrite.ca" in host:
         results = []
         seen = set()
+
         for a in soup.select("a[href*='/e/'], a[href*='eventbrite']"):
             href = urljoin(url, a.get("href"))
             title = norm(a.get_text(" "))
             if len(title) < 4:
                 continue
+
             block = a.parent
             for _ in range(3):
-                if getattr(block, 'parent', None):
+                if getattr(block, "parent", None):
                     block = block.parent
+
             text = norm(block.get_text(" "))[:2500]
             key = (title.lower(), href)
             if key in seen:
                 continue
             seen.add(key)
-            results.append(Event(title=title[:180], start=first_date(text), end=None, location=infer_location(text), url=href, source="eventbrite.ca", description=text[:1000] or None))
+
+            results.append(Event(
+                title=title[:180],
+                start=first_date(text),
+                end=None,
+                location=infer_location(text),
+                url=href,
+                source="eventbrite.ca",
+                description=text[:1000] or None,
+            ))
+
         if results:
             return results
 
@@ -390,18 +469,32 @@ def site_specific_extract(url: str, html: str) -> list[Event]:
 
 
 def enrich_detail_pages(context, events: list[Event], site_deadline: Optional[float] = None) -> list[Event]:
-    out = []
-    for i, e in enumerate(events[:MAX_DETAIL_PAGES_PER_SITE]):
-        if site_deadline and time.monotonic() >= site_deadline:
+    out: list[Event] = []
+
+    if not events:
+        return out
+
+    # If time is already low, do less detail enrichment
+    dynamic_limit = MAX_DETAIL_PAGES_PER_SITE
+    if seconds_left(site_deadline) < 20:
+        dynamic_limit = min(dynamic_limit, 4)
+    if seconds_left(site_deadline) < 10:
+        dynamic_limit = min(dynamic_limit, 2)
+
+    for i, e in enumerate(events[:dynamic_limit]):
+        if timed_out(site_deadline):
             out.extend(events[i:])
             return out
+
         if not e.url:
             out.append(e)
             continue
+
         try:
-            html = fetch_html(context, e.url)
+            html = fetch_html(context, e.url, deadline=site_deadline)
             soup = BeautifulSoup(html, "lxml")
             text = norm(soup.get_text(" "))[:9000]
+
             if not e.start:
                 e.start = first_date(text)
             if not e.location:
@@ -410,8 +503,10 @@ def enrich_detail_pages(context, events: list[Event], site_deadline: Optional[fl
                 e.description = text[:1200] or e.description
         except Exception:
             pass
+
         out.append(e)
-    out.extend(events[MAX_DETAIL_PAGES_PER_SITE:])
+
+    out.extend(events[dynamic_limit:])
     return out
 
 
@@ -424,99 +519,196 @@ def dedupe(events: list[Event]) -> list[Event]:
     return list(d.values())
 
 
-def classify(events: list[Event], batch_size: int = 25) -> list[Event]:
+def classify(events: list[Event], batch_size: int = CLASSIFY_BATCH_SIZE) -> list[Event]:
     if not client or not events:
         return events
+
     for i in range(0, len(events), batch_size):
         group = events[i:i + batch_size]
         payload = [{
-            "title": e.title, "start": e.start, "location": e.location,
-            "url": e.url, "source": e.source, "description": e.description,
+            "title": e.title,
+            "start": e.start,
+            "location": e.location,
+            "url": e.url,
+            "source": e.source,
+            "description": e.description,
         } for e in group]
-        resp = client.responses.create(
-            model="gpt-4.1-mini",
-            input=[
-                {"role": "system", "content": (
-                    "Classify events for a youth nature events calendar. "
-                    "nature_based=true for outdoors, parks, trails, conservation, wildlife, tree planting, gardening, hikes, environmental volunteering, eco education, camping, birding, forestry, zoo or similar. "
-                    "teen_ok_13_17=true when safe/appropriate for ages 13-17, or youth/family/all-ages. Return strict JSON only."
-                )},
-                {"role": "user", "content": json.dumps({"events": payload}, ensure_ascii=False)},
-            ],
-            text={"format": {"type": "json_schema", "name": "event_classification", "schema": {
-                "type": "object", "properties": {
-                    "results": {"type": "array", "items": {"type": "object", "properties": {
-                        "title": {"type": "string"}, "url": {"type": ["string", "null"]}, "source": {"type": "string"},
-                        "nature_based": {"type": "boolean"}, "teen_ok_13_17": {"type": "boolean"},
-                        "nature_reason": {"type": "string"}, "teen_reason": {"type": "string"},
-                        "tags": {"type": "array", "items": {"type": "string"}}
-                    }, "required": ["title", "url", "source", "nature_based", "teen_ok_13_17", "nature_reason", "teen_reason", "tags"], "additionalProperties": False}}
-                }, "required": ["results"], "additionalProperties": False
-            }}}
-        )
-        data = json.loads(resp.output_text)
-        lookup = {(r["title"].strip().lower(), (r.get("url") or "").strip()): r for r in data["results"]}
-        for e in group:
-            r = lookup.get((e.title.strip().lower(), (e.url or "").strip()))
-            if r:
-                e.nature_based = r["nature_based"]
-                e.teen_ok_13_17 = r["teen_ok_13_17"]
-                e.nature_reason = r["nature_reason"][:220]
-                e.teen_reason = r["teen_reason"][:220]
-                e.nature_tags = [t[:24] for t in r.get("tags", [])][:4]
+
+        try:
+            resp = client.responses.create(
+                model="gpt-4.1-mini",
+                input=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Classify events for a youth nature events calendar. "
+                            "nature_based=true for outdoors, parks, trails, conservation, wildlife, tree planting, gardening, hikes, "
+                            "environmental volunteering, eco education, camping, birding, forestry, zoo or similar. "
+                            "teen_ok_13_17=true when safe/appropriate for ages 13-17, or youth/family/all-ages. "
+                            "Return strict JSON only."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": json.dumps({"events": payload}, ensure_ascii=False),
+                    },
+                ],
+                text={
+                    "format": {
+                        "type": "json_schema",
+                        "name": "event_classification",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "title": {"type": "string"},
+                                            "url": {"type": ["string", "null"]},
+                                            "source": {"type": "string"},
+                                            "nature_based": {"type": "boolean"},
+                                            "teen_ok_13_17": {"type": "boolean"},
+                                            "nature_reason": {"type": "string"},
+                                            "teen_reason": {"type": "string"},
+                                            "tags": {"type": "array", "items": {"type": "string"}},
+                                        },
+                                        "required": [
+                                            "title", "url", "source", "nature_based",
+                                            "teen_ok_13_17", "nature_reason", "teen_reason", "tags"
+                                        ],
+                                        "additionalProperties": False,
+                                    },
+                                }
+                            },
+                            "required": ["results"],
+                            "additionalProperties": False,
+                        },
+                    }
+                },
+            )
+
+            data = json.loads(resp.output_text)
+            lookup = {
+                (r["title"].strip().lower(), (r.get("url") or "").strip()): r
+                for r in data["results"]
+            }
+
+            for e in group:
+                r = lookup.get((e.title.strip().lower(), (e.url or "").strip()))
+                if r:
+                    e.nature_based = r["nature_based"]
+                    e.teen_ok_13_17 = r["teen_ok_13_17"]
+                    e.nature_reason = r["nature_reason"][:220]
+                    e.teen_reason = r["teen_reason"][:220]
+                    e.nature_tags = [t[:24] for t in r.get("tags", [])][:4]
+
+        except Exception as ex:
+            print(f"Classification batch failed: {ex}")
+
     return events
+
+
+def write_json(path: str, data: Any) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 def main():
     os.makedirs(DEBUG_DIR, exist_ok=True)
+
     all_events: list[Event] = []
-    site_counts = []
+    site_counts: list[dict[str, Any]] = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=HEADLESS, args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"])
+        browser = p.chromium.launch(
+            headless=HEADLESS,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-blink-features=AutomationControlled",
+            ],
+        )
         context = new_context(browser)
+
         for site in SITE_CONFIGS:
             url = site["url"]
-            site_started = time.monotonic()
+            site_started = now_monotonic()
             site_deadline = site_started + MAX_SITE_SECONDS
+
             print(f"Scraping: {url}")
+
             try:
-                html = fetch_html(context, url)
+                html = fetch_html(context, url, deadline=site_deadline)
+
                 if SAVE_DEBUG:
+                    write_json(
+                        os.path.join(DEBUG_DIR, f"{slugify(url)}_meta.json"),
+                        {"url": url, "saved_at": time.time()},
+                    )
                     with open(os.path.join(DEBUG_DIR, f"{slugify(url)}.html"), "w", encoding="utf-8") as f:
                         f.write(html)
+
                 soup = BeautifulSoup(html, "lxml")
+
                 events = site_specific_extract(url, html)
-                if site["kind"] != "listing":
+
+                if site["kind"] != "listing" and not timed_out(site_deadline):
                     events.extend(single_page_extract(soup, url))
+
                 events = dedupe(events)
-                events = enrich_detail_pages(context, events, site_deadline=site_deadline)
+
+                if not timed_out(site_deadline):
+                    events = enrich_detail_pages(context, events, site_deadline=site_deadline)
+
                 events = dedupe(events)
-                elapsed = round(time.monotonic() - site_started, 1)
-                print(f"  found ~{len(events)} candidates in {elapsed}s")
-                all_events.extend(events)
+
+                elapsed = round(now_monotonic() - site_started, 1)
                 status = "ok" if elapsed < MAX_SITE_SECONDS else "partial_timeout"
-                site_counts.append({"url": url, "candidate_count": len(events), "status": status, "elapsed_seconds": elapsed})
-                with open(os.path.join(DEBUG_DIR, f"{slugify(url)}.json"), "w", encoding="utf-8") as f:
-                    json.dump([e.__dict__ for e in events], f, ensure_ascii=False, indent=2)
+
+                print(f"  found ~{len(events)} candidates in {elapsed}s [{status}]")
+
+                all_events.extend(events)
+                site_counts.append({
+                    "url": url,
+                    "candidate_count": len(events),
+                    "status": status,
+                    "elapsed_seconds": elapsed,
+                })
+
+                if SAVE_DEBUG:
+                    write_json(
+                        os.path.join(DEBUG_DIR, f"{slugify(url)}.json"),
+                        [e.__dict__ for e in events],
+                    )
+
             except Exception as ex:
-                elapsed = round(time.monotonic() - site_started, 1)
+                elapsed = round(now_monotonic() - site_started, 1)
                 print(f"  FAILED after {elapsed}s: {ex}")
-                site_counts.append({"url": url, "candidate_count": 0, "status": f"failed: {ex}", "elapsed_seconds": elapsed})
+                site_counts.append({
+                    "url": url,
+                    "candidate_count": 0,
+                    "status": f"failed: {ex}",
+                    "elapsed_seconds": elapsed,
+                })
+
         context.close()
         browser.close()
 
     all_events = dedupe(all_events)
-    with open("site_counts.json", "w", encoding="utf-8") as f:
-        json.dump(site_counts, f, ensure_ascii=False, indent=2)
-    with open("all_events_raw.json", "w", encoding="utf-8") as f:
-        json.dump([e.__dict__ for e in all_events], f, ensure_ascii=False, indent=2)
+
+    write_json("site_counts.json", site_counts)
+    write_json("all_events_raw.json", [e.__dict__ for e in all_events])
 
     print(f"Total unique candidates: {len(all_events)}")
+
     classified = classify(all_events)
     filtered = [e for e in classified if e.nature_based is True and e.teen_ok_13_17 is not False]
-    with open("nature_events.json", "w", encoding="utf-8") as f:
-        json.dump([
+
+    write_json(
+        "nature_events.json",
+        [
             {
                 "title": e.title,
                 "start": e.start,
@@ -531,7 +723,9 @@ def main():
                 },
             }
             for e in filtered
-        ], f, ensure_ascii=False, indent=2)
+        ],
+    )
+
     print(f"Filtered nature/youth events: {len(filtered)}")
     print("Wrote nature_events.json")
 
