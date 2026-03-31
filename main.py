@@ -17,6 +17,11 @@ DEBUG_DIR = os.environ.get("SCRAPER_DEBUG_DIR", "scrape_debug")
 SAVE_DEBUG = os.environ.get("SAVE_DEBUG_HTML", "1") == "1"
 HEADLESS = os.environ.get("HEADLESS", "1") == "1"
 MAX_DETAIL_PAGES_PER_SITE = int(os.environ.get("MAX_DETAIL_PAGES_PER_SITE", "40"))
+MAX_SCROLL_CYCLES = int(os.environ.get("MAX_SCROLL_CYCLES", "8"))
+MAX_PAGINATION_CLICKS = int(os.environ.get("MAX_PAGINATION_CLICKS", "6"))
+MAX_GOTO_TIMEOUT_MS = int(os.environ.get("MAX_GOTO_TIMEOUT_MS", "60000"))
+MAX_PAGE_TOTAL_MS = int(os.environ.get("MAX_PAGE_TOTAL_MS", "90000"))
+MAX_SITE_SECONDS = int(os.environ.get("MAX_SITE_SECONDS", "120"))
 
 SITE_CONFIGS: list[dict[str, Any]] = [
     {"url": "https://trca.ca/events-calendar/", "kind": "listing"},
@@ -175,14 +180,37 @@ def accept_cookies(page):
 
 
 def hydrate_page(page):
+    start = time.monotonic()
     accept_cookies(page)
-    for _ in range(10):
+
+    stable_rounds = 0
+    last_height = -1
+    for _ in range(MAX_SCROLL_CYCLES):
+        if (time.monotonic() - start) * 1000 > MAX_PAGE_TOTAL_MS:
+            break
         try:
             page.mouse.wheel(0, 2200)
         except Exception:
-            page.evaluate("window.scrollBy(0, 2200)")
-        page.wait_for_timeout(600)
-    for _ in range(25):
+            try:
+                page.evaluate("window.scrollBy(0, 2200)")
+            except Exception:
+                pass
+        try:
+            page.wait_for_timeout(700)
+            height = page.evaluate("document.body ? document.body.scrollHeight : 0")
+        except Exception:
+            height = last_height
+        if height == last_height:
+            stable_rounds += 1
+        else:
+            stable_rounds = 0
+        last_height = height
+        if stable_rounds >= 2:
+            break
+
+    for _ in range(MAX_PAGINATION_CLICKS):
+        if (time.monotonic() - start) * 1000 > MAX_PAGE_TOTAL_MS:
+            break
         clicked = False
         for sel in [
             "button:has-text('Load more')", "button:has-text('Load More')", "a:has-text('Load more')",
@@ -192,16 +220,20 @@ def hydrate_page(page):
             try:
                 loc = page.locator(sel).first
                 if loc.count() and loc.is_visible():
-                    loc.scroll_into_view_if_needed(timeout=1500)
-                    loc.click(timeout=2500)
-                    page.wait_for_timeout(1800)
+                    loc.scroll_into_view_if_needed(timeout=1200)
+                    loc.click(timeout=2000)
+                    page.wait_for_timeout(1200)
                     clicked = True
                     break
             except Exception:
                 pass
         if not clicked:
             break
-    page.wait_for_timeout(1500)
+
+    try:
+        page.wait_for_timeout(1000)
+    except Exception:
+        pass
 
 
 def new_context(browser):
@@ -221,12 +253,15 @@ def new_context(browser):
 
 def fetch_html(context, url: str) -> str:
     page = context.new_page()
-    page.set_default_timeout(15000)
-    page.set_default_navigation_timeout(120000)
+    page.set_default_timeout(12000)
+    page.set_default_navigation_timeout(MAX_GOTO_TIMEOUT_MS)
     last_error = None
-    for wait_until in ["domcontentloaded", "load", "networkidle"]:
+    started = time.monotonic()
+    for wait_until in ["domcontentloaded", "load"]:
         try:
-            page.goto(url, wait_until=wait_until, timeout=120000)
+            if (time.monotonic() - started) * 1000 > MAX_PAGE_TOTAL_MS:
+                raise TimeoutError(f"page budget exceeded for {url}")
+            page.goto(url, wait_until=wait_until, timeout=MAX_GOTO_TIMEOUT_MS)
             hydrate_page(page)
             html = page.content()
             page.close()
@@ -234,7 +269,7 @@ def fetch_html(context, url: str) -> str:
         except Exception as ex:
             last_error = ex
             try:
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(1200)
             except Exception:
                 pass
     try:
@@ -354,9 +389,12 @@ def site_specific_extract(url: str, html: str) -> list[Event]:
     return generic_listing_extract(soup, url)
 
 
-def enrich_detail_pages(context, events: list[Event]) -> list[Event]:
+def enrich_detail_pages(context, events: list[Event], site_deadline: Optional[float] = None) -> list[Event]:
     out = []
     for i, e in enumerate(events[:MAX_DETAIL_PAGES_PER_SITE]):
+        if site_deadline and time.monotonic() >= site_deadline:
+            out.extend(events[i:])
+            return out
         if not e.url:
             out.append(e)
             continue
@@ -439,6 +477,8 @@ def main():
         context = new_context(browser)
         for site in SITE_CONFIGS:
             url = site["url"]
+            site_started = time.monotonic()
+            site_deadline = site_started + MAX_SITE_SECONDS
             print(f"Scraping: {url}")
             try:
                 html = fetch_html(context, url)
@@ -450,16 +490,19 @@ def main():
                 if site["kind"] != "listing":
                     events.extend(single_page_extract(soup, url))
                 events = dedupe(events)
-                events = enrich_detail_pages(context, events)
+                events = enrich_detail_pages(context, events, site_deadline=site_deadline)
                 events = dedupe(events)
-                print(f"  found ~{len(events)} candidates")
+                elapsed = round(time.monotonic() - site_started, 1)
+                print(f"  found ~{len(events)} candidates in {elapsed}s")
                 all_events.extend(events)
-                site_counts.append({"url": url, "candidate_count": len(events), "status": "ok"})
+                status = "ok" if elapsed < MAX_SITE_SECONDS else "partial_timeout"
+                site_counts.append({"url": url, "candidate_count": len(events), "status": status, "elapsed_seconds": elapsed})
                 with open(os.path.join(DEBUG_DIR, f"{slugify(url)}.json"), "w", encoding="utf-8") as f:
                     json.dump([e.__dict__ for e in events], f, ensure_ascii=False, indent=2)
             except Exception as ex:
-                print(f"  FAILED: {ex}")
-                site_counts.append({"url": url, "candidate_count": 0, "status": f"failed: {ex}"})
+                elapsed = round(time.monotonic() - site_started, 1)
+                print(f"  FAILED after {elapsed}s: {ex}")
+                site_counts.append({"url": url, "candidate_count": 0, "status": f"failed: {ex}", "elapsed_seconds": elapsed})
         context.close()
         browser.close()
 
