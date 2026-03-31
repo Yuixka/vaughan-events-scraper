@@ -19,13 +19,22 @@ jobs:
         with:
           python-version: '3.11'
 
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - run: python -m playwright install chromium
+      - name: Install Playwright
+        run: python -m playwright install chromium
 
       - name: Run scraper
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SAVE_DEBUG_HTML: 0
+          MAX_DETAIL_PAGES_PER_SITE: 6
+          MAX_SITE_SECONDS: 40
+          MAX_GOTO_TIMEOUT_MS: 20000
+          MAX_PAGE_TOTAL_MS: 30000
+          MAX_SCROLL_CYCLES: 4
+          MAX_PAGINATION_CLICKS: 3
         run: xvfb-run --auto-servernum python main.py
 
       - name: Commit updated JSON
