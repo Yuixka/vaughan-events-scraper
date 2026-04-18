@@ -525,14 +525,16 @@ def classify(events: list[Event], batch_size: int = CLASSIFY_BATCH_SIZE) -> list
 
     for i in range(0, len(events), batch_size):
         group = events[i:i + batch_size]
+
         payload = [{
+            "id": i + j,
             "title": e.title,
             "start": e.start,
             "location": e.location,
             "url": e.url,
             "source": e.source,
             "description": e.description,
-        } for e in group]
+        } for j, e in enumerate(group)]
 
         try:
             resp = client.responses.create(
@@ -565,6 +567,7 @@ def classify(events: list[Event], batch_size: int = CLASSIFY_BATCH_SIZE) -> list
                                     "items": {
                                         "type": "object",
                                         "properties": {
+                                            "id": {"type": "integer"},
                                             "title": {"type": "string"},
                                             "url": {"type": ["string", "null"]},
                                             "source": {"type": "string"},
@@ -572,10 +575,13 @@ def classify(events: list[Event], batch_size: int = CLASSIFY_BATCH_SIZE) -> list
                                             "teen_ok_13_17": {"type": "boolean"},
                                             "nature_reason": {"type": "string"},
                                             "teen_reason": {"type": "string"},
-                                            "tags": {"type": "array", "items": {"type": "string"}},
+                                            "tags": {
+                                                "type": "array",
+                                                "items": {"type": "string"}
+                                            },
                                         },
                                         "required": [
-                                            "title", "url", "source", "nature_based",
+                                            "id", "title", "url", "source", "nature_based",
                                             "teen_ok_13_17", "nature_reason", "teen_reason", "tags"
                                         ],
                                         "additionalProperties": False,
@@ -590,22 +596,21 @@ def classify(events: list[Event], batch_size: int = CLASSIFY_BATCH_SIZE) -> list
             )
 
             data = json.loads(resp.output_text)
-            lookup = {
-                (r["title"].strip().lower(), (r.get("url") or "").strip()): r
-                for r in data["results"]
-            }
+            lookup = {r["id"]: r for r in data["results"]}
 
-            for e in group:
-                r = lookup.get((e.title.strip().lower(), (e.url or "").strip()))
-                if r:
-                    e.nature_based = r["nature_based"]
-                    e.teen_ok_13_17 = r["teen_ok_13_17"]
-                    e.nature_reason = r["nature_reason"][:220]
-                    e.teen_reason = r["teen_reason"][:220]
-                    e.nature_tags = [t[:24] for t in r.get("tags", [])][:4]
+            for j, e in enumerate(group):
+                r = lookup.get(i + j)
+                if not r:
+                    continue
+                e.nature_based = r["nature_based"]
+                e.teen_ok_13_17 = r["teen_ok_13_17"]
+                e.nature_reason = r["nature_reason"][:220]
+                e.teen_reason = r["teen_reason"][:220]
+                e.nature_tags = [t[:24] for t in r.get("tags", [])][:4]
 
         except Exception as ex:
             print(f"Classification batch failed: {ex}")
+            continue
 
     return events
 
