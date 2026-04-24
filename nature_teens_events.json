@@ -154,6 +154,23 @@
     }
   },
   {
+    "title": "Frog Watch at Cold Creek Conservation Area",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Cold Creek Conservation Area, King, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Our Power, Our Planet: An Earth Day Experience",
     "start": "2026-04-18",
     "end": null,
@@ -408,6 +425,23 @@
     }
   },
   {
+    "title": "City Nature Challenge BioBlitz",
+    "start": "2026-04-25",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Tommy Thompson Park, Toronto, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Community Tree Planting in Fallingbrook Park (Whitby)",
     "start": "2026-04-25",
     "end": null,
@@ -444,6 +478,23 @@
       "nature_reason": "Community reuse/recycling/environment day.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting at Claireville",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Claireville Conservation Area, Brampton, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
@@ -769,6 +820,23 @@
     }
   },
   {
+    "title": "Spring Bird Festival at Tommy Thompson Park",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Tommy Thompson Park, Toronto, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Topcliff Park Youth Week Planting Event",
     "start": "2026-05-09",
     "end": null,
@@ -895,6 +963,23 @@
     }
   },
   {
+    "title": "Family Survival Skills at Kortright Centre",
+    "start": "2026-05-16",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Kortright Centre for Conservation, Vaughan, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Community Environment Day at St. Basil-the-Great College School",
     "start": "2026-05-17",
     "end": null,
@@ -960,6 +1045,23 @@
     }
   },
   {
+    "title": "Gardening for Pollinators Workshop",
+    "start": "2026-05-23",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Kortright Centre for Conservation, Vaughan, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Nature Connection: Stewardship Day at Downsview Park",
     "start": "2026-05-24",
     "end": null,
@@ -1012,6 +1114,23 @@
       "nature_reason": "Outdoor / nature-oriented park event.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Sunset Birding Walk",
+    "start": "2026-05-30",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Tommy Thompson Park, Toronto, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
@@ -1098,6 +1217,23 @@
     }
   },
   {
+    "title": "Introduction to Beekeeping",
+    "start": "2026-06-06",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Kortright Centre for Conservation, Vaughan, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Donora Park Tree Planting Event",
     "start": "2026-06-10",
     "end": null,
@@ -1124,6 +1260,23 @@
       "nature_reason": "Nature/environment themed public program.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Wetland Wonders Nature Walk",
+    "start": "2026-06-13",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Lake St. George Field Centre, Richmond Hill, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
@@ -1197,6 +1350,23 @@
     }
   },
   {
+    "title": "Forest Bathing Walk",
+    "start": "2026-06-20",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Bruce's Mill Conservation Park, Stouffville, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Queer Ecology Art",
     "start": "2026-06-21",
     "end": null,
@@ -1223,6 +1393,23 @@
     }
   },
   {
+    "title": "Conservation Youth Corps Stewardship Day",
+    "start": "2026-07-08",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "TRCA Site, GTA Region",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
     "title": "Nature Connection: Insect Adventures",
     "start": "2026-07-12",
     "end": null,
@@ -1233,6 +1420,40 @@
       "nature_reason": "Outdoor / nature-oriented park event.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Pollinator Garden Stewardship Session",
+    "start": "2026-07-15",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Kortright Centre for Conservation, Vaughan, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
+    }
+  },
+  {
+    "title": "Nature Photography Walk",
+    "start": "2026-07-18",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Albion Hills Conservation Park, Caledon, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
@@ -1272,6 +1493,23 @@
       "nature_reason": "Nature/environment themed public program.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Family Campfire and Night Hike",
+    "start": "2026-08-08",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Kortright Centre for Conservation, Vaughan, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
@@ -1324,6 +1562,23 @@
       "nature_reason": "Environmental stewardship event.",
       "teen_reason": "Suitable for teens",
       "tags": []
+    }
+  },
+  {
+    "title": "Fall Migration Bird Walk",
+    "start": "2026-09-19",
+    "end": null,
+    "url": "https://calendar.trca.ca/",
+    "extendedProps": {
+      "location": "Tommy Thompson Park, Toronto, ON",
+      "source": "TRCA",
+      "nature_reason": "TRCA outdoor nature event focused on conservation, wildlife, stewardship, or ecology.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "TRCA",
+        "nature",
+        "outdoors"
+      ]
     }
   },
   {
