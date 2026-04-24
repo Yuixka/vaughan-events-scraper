@@ -1,1 +1,1342 @@
-[]
+[
+  {
+    "title": "Frosty Flora Nature Walk in High Park",
+    "start": "2026-01-18",
+    "end": null,
+    "url": "https://highparknaturecentre.com/event/wi26-frosty-flora-nature-walk/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Winter nature walk about plant adaptations and wildlife support.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "plants",
+        "nature hike"
+      ]
+    }
+  },
+  {
+    "title": "Winter Weather Nature Walk in High Park",
+    "start": "2026-01-25",
+    "end": null,
+    "url": "https://highparknaturecentre.com/event/wi26-winter-weather-nature-walk/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Winter nature walk exploring weather and seasonal change.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature hike"
+      ]
+    }
+  },
+  {
+    "title": "Winter Tree Identification Workshop in High Park",
+    "start": "2026-03-01",
+    "end": null,
+    "url": "https://highparknaturecentre.com/event/wi26-winter-tree-id-workshop/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Outdoor workshop on identifying trees in winter.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "trees",
+        "workshop"
+      ]
+    }
+  },
+  {
+    "title": "April Virtual Volunteer Orientation",
+    "start": "2026-04-09",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "Online",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Brilliant Beavers Nature Walk in Toronto’s High Park",
+    "start": "2026-04-12",
+    "end": null,
+    "url": "https://highparknaturecentre.com/event/sp26-brilliant-beavers/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Family-friendly nature walk about beavers and their ecosystem role.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "wildlife",
+        "nature hike"
+      ]
+    }
+  },
+  {
+    "title": "Community Environment Day at York Mills Collegiate",
+    "start": "2026-04-12",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "York Mills Collegiate, 490 York Mills Rd",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Rain Gardens 101",
+    "start": "2026-04-13",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Garnet A. Williams Community Centre, 501 Clark Ave W",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Fantastic Fish Workshop & Guided Walk",
+    "start": "2026-04-17",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Oak Ridges Community Centre / Lake Wilcox",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting at Meander Park",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Meander Park",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Meander Park (Richmond Hill)",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "101 Alpaca Dr",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Earth Day Tree Planting",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.brampton.ca/EN/residents/Environment/Pages/Get-Involved.aspx",
+    "extendedProps": {
+      "location": "Brampton",
+      "source": "City of Brampton",
+      "nature_reason": "Earth Month environmental activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Our Power, Our Planet: An Earth Day Experience",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Richmond Hill Public Library – Central Branch",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Parks Clean-Up - Manitou Park",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.brampton.ca/EN/residents/Environment/Pages/Get-Involved.aspx",
+    "extendedProps": {
+      "location": "Manitou Park",
+      "source": "City of Brampton",
+      "nature_reason": "Earth Month environmental activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Parks Clean-Up - Teramoto Park",
+    "start": "2026-04-18",
+    "end": null,
+    "url": "https://www.brampton.ca/EN/residents/Environment/Pages/Get-Involved.aspx",
+    "extendedProps": {
+      "location": "Teramoto Park",
+      "source": "City of Brampton",
+      "nature_reason": "Earth Month environmental activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at David Crombie Park",
+    "start": "2026-04-19",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "David Crombie Park, 131 The Esplanade",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting at Meander Park",
+    "start": "2026-04-19",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Meander Park",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Meander Park (Richmond Hill)",
+    "start": "2026-04-19",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "101 Alpaca Dr",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Celebrate Earth Day at CIBC SQUARE",
+    "start": "2026-04-20",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "CIBC SQUARE",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "From Balconies to Backyards: Planning a Successful Vegetable Garden",
+    "start": "2026-04-20",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Fort York",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Let's Make Toronto More Bird-Friendly",
+    "start": "2026-04-20",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Deer Park",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Rain Barrel Art Project - Season 2",
+    "start": "2026-04-20",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Celebrate Earth Day at CIBC SQUARE",
+    "start": "2026-04-21",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "CIBC SQUARE",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "From Balconies to Backyards: Planning a Successful Vegetable Garden",
+    "start": "2026-04-21",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Eatonville",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Maximize Your Healthy Yard Gardening Workshop",
+    "start": "2026-04-21",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Bayview Hill Community Centre",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-04-21",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Ethennonnhawahstihnen'",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Spring Steps with Curious Walkers",
+    "start": "2026-04-21",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Celebrate Earth Day at CIBC SQUARE",
+    "start": "2026-04-22",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "CIBC SQUARE",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "McCowan District Park Earth Day Planting Event",
+    "start": "2026-04-22",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "McCowan District Park, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Earth Day planting of native trees and shrubs to support wildlife habitat.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Native Edible Plants of Toronto Webinar",
+    "start": "2026-04-23",
+    "end": null,
+    "url": "https://www.toronto.ca/explore-enjoy/parks-recreation/program-activities/arts-hobbies-interests/nature-eco-programs/forestry-talks-tours/forestry-talks-tours-calendar/",
+    "extendedProps": {
+      "location": "Online / City-Wide, Toronto",
+      "source": "City of Toronto Forestry",
+      "nature_reason": "Forestry webinar about native edible plants in Toronto.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "forestry",
+        "plants",
+        "webinar"
+      ]
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-04-23",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Danforth/Coxwell",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Fallingbrook Park (Whitby)",
+    "start": "2026-04-25",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "25 Fallingbrook St",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Your Toronto Zoo Recognizes Earth Day | E-Waste Collection & Community Food Drive",
+    "start": "2026-04-25",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Passenger Drop Off Loop, Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at Dufferin Mall",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Dufferin Mall, 900 Dufferin St",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting at Rouge River Valley",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://www.richmondhill.ca/en/news/celebrate-earth-month-in-richmond-hill.aspx",
+    "extendedProps": {
+      "location": "Rouge River Valley",
+      "source": "City of Richmond Hill",
+      "nature_reason": "Family-friendly eco-themed activity.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Earth Day at Downsview Park",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Play Zone, Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Know Your Nature: Youth Rangers-led Nature Walk in Toronto’s High Park",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Forest School, 375 Colborne Lodge Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Youth Rangers-led guided nature walk through High Park.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature hike",
+        "youth",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Neilson Park (Etobicoke) Tree Planting Event",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Neilson Park, Etobicoke, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Native tree and shrub planting volunteer event.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Your Toronto Zoo Recognizes Earth Day | E-Waste Collection & Community Food Drive",
+    "start": "2026-04-26",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Passenger Drop Off Loop, Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Corporate Tree Planting - Freedom Trail Park",
+    "start": "2026-04-28",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Freedom Trail Park",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Pelmo Park Tree Planting Event",
+    "start": "2026-04-29",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Pelmo Park, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Native tree and shrub planting volunteer event.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Community Environment Day at Malvern Recreation Centre",
+    "start": "2026-05-02",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Malvern Recreation Centre, 30 Sewells Rd",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Stewart Burnett Park (Aurora)",
+    "start": "2026-05-02",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "189 Holladay Dr",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Dorset Park Tree Planting Event",
+    "start": "2026-05-02",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Dorset Park, Scarborough, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Native tree and shrub planting volunteer event.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Spring Wildlife Festival",
+    "start": "2026-05-02",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Canadian Wetlands Area, Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Conlin Meadows Park (Oshawa)",
+    "start": "2026-05-03",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "1091 Ormond Dr",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "International Dawn Chorus Day in Toronto’s High Park",
+    "start": "2026-05-03",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Early morning birding hike celebrating spring migration.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "birding",
+        "hike"
+      ]
+    }
+  },
+  {
+    "title": "Jane’s Walk: Habitat Histories in Toronto’s High Park",
+    "start": "2026-05-03",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Guided walk exploring High Park habitats and natural history.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature hike"
+      ]
+    }
+  },
+  {
+    "title": "Community Environment Day at Wychwood Barns",
+    "start": "2026-05-05",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Wychwood Barns, 76 Wychwood Ave",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Tree Tenders Training",
+    "start": "2026-05-05",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "The Hub at Downsview Park / Zoom",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Introduction to Birding",
+    "start": "2026-05-07",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Introduction to Birding",
+    "start": "2026-05-08",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Concord Thornhill Regional Park (Vaughan)",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "299 Racco Pkwy",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "May Birding Walk in High Park: World Migratory Bird Day",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Birding walk for World Migratory Bird Day.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "birding"
+      ]
+    }
+  },
+  {
+    "title": "Member Storytelling Session - Step into the World of Mangroves!",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Wildlife Marquee, Discovery Zone, Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Migratory Bird Day",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Sketching Spring Ephemerals with Alan Li in High Park",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Outdoor nature-themed sketching workshop focused on spring ephemerals.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature art",
+        "plants"
+      ]
+    }
+  },
+  {
+    "title": "Topcliff Park Youth Week Planting Event",
+    "start": "2026-05-09",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Topcliff Park, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Youth Week planting event with volunteer certificate opportunity.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "youth",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "2026 World Migratory Bird Day",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Maple Nature Reserve, 10401 Dufferin St",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at Allan Gardens",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Allan Gardens, 160 Gerrard St E",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Tree Planting in Bluff Trail (Nobleton)",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "32 Bluff Trail",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Nature Connection: Introduction to Birding",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Peak of Migration: May Birding Walk in Toronto’s High Park",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Casual spring migration birding walk in High Park.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "birding"
+      ]
+    }
+  },
+  {
+    "title": "Wildlife Photography Workshop With Richard Bod in Toronto’s High Park",
+    "start": "2026-05-10",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Outdoor wildlife photography workshop focused on ethical nature photography.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "wildlife",
+        "photography"
+      ]
+    }
+  },
+  {
+    "title": "From Balconies to Backyards: Planning a Successful Vegetable Garden",
+    "start": "2026-05-11",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Deer Park",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at Fairfield Seniors' Centre",
+    "start": "2026-05-16",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Fairfield Seniors' Centre",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at St. Basil-the-Great College School",
+    "start": "2026-05-17",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "St. Basil-the-Great College School",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at North Toronto Memorial Arena",
+    "start": "2026-05-19",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "North Toronto Memorial Arena, 174 Orchard View Blvd",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Corporate Tree Planting - Mackenzie Glen District Park",
+    "start": "2026-05-19",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Mackenzie Glen District Park",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Elora Adventure Film Festival",
+    "start": "2026-05-22",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Community Environment Day at Dieppe Park",
+    "start": "2026-05-23",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Dieppe Park",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Nature Connection: Stewardship Day at Downsview Park",
+    "start": "2026-05-24",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Poetry Workshop With Laboni Islam in Toronto’s High Park",
+    "start": "2026-05-24",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Nature-linked poetry workshop with a guided hike on the trail.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature writing",
+        "hike"
+      ]
+    }
+  },
+  {
+    "title": "Seeds of Intention: A Forest Walk for Renewal (English)",
+    "start": "2026-05-30",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Seeds of Intention: A Forest Walk for Renewal (French)",
+    "start": "2026-05-30",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "High Park Hikeathon: A Fundraiser For Nature Connection",
+    "start": "2026-05-31",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Fundraising hike supporting nature connection programs.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "hike"
+      ]
+    }
+  },
+  {
+    "title": "Community Environment Day at Downsview Park",
+    "start": "2026-06-02",
+    "end": null,
+    "url": "https://www.toronto.ca/services-payments/recycling-organics-garbage/community-environment-days/community-environment-days-schedule/",
+    "extendedProps": {
+      "location": "Downsview Park, 10 Carl Hall Rd",
+      "source": "City of Toronto",
+      "nature_reason": "Community reuse/recycling/environment day.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Corporate Tree Planting - Saint-Jean de Brebeuf Park",
+    "start": "2026-06-02",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Saint-Jean de Brebeuf Park",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Beverly Glen Park Tree Planting Event",
+    "start": "2026-06-04",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Beverly Glen Park, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Native tree and shrub planting to support urban canopy and wildlife habitat.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "Container Gardening: Supporting Our Local Pollinators in Small Spaces",
+    "start": "2026-06-05",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Mount Dennis",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-06-05",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Hillcrest",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Donora Park Tree Planting Event",
+    "start": "2026-06-10",
+    "end": null,
+    "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/tree-planting-stewardship/tree-planting-stewardship-events-calendar/",
+    "extendedProps": {
+      "location": "Donora Park, Toronto",
+      "source": "City of Toronto",
+      "nature_reason": "Forest care and native planting stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "tree planting",
+        "stewardship"
+      ]
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-06-12",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Parkdale",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Cyanotype Printmaking Workshop With Alan Li in Toronto’s High Park",
+    "start": "2026-06-14",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Nature-inspired cyanotype printmaking workshop in High Park.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "nature art",
+        "plants"
+      ]
+    }
+  },
+  {
+    "title": "June Early Summer Birding Walk in Toronto’s High Park",
+    "start": "2026-06-14",
+    "end": null,
+    "url": "https://highparknaturecentre.com/special-events/",
+    "extendedProps": {
+      "location": "High Park Nature Centre, 440 Parkside Drive, Toronto",
+      "source": "High Park Nature Centre",
+      "nature_reason": "Birding walk focused on summer birds in High Park.",
+      "teen_reason": "Suitable for teens",
+      "tags": [
+        "birding"
+      ]
+    }
+  },
+  {
+    "title": "Nature Connection: Prairie Mysteries",
+    "start": "2026-06-14",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Queer Ecology Hike",
+    "start": "2026-06-14",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Bees Love Trees Tour in Cullen Central Park (Whitby)",
+    "start": "2026-06-20",
+    "end": null,
+    "url": "https://www.yourleaf.org/event-type/tree-planting",
+    "extendedProps": {
+      "location": "Cullen Central Park, 4015 Cochrane St",
+      "source": "LEAF",
+      "nature_reason": "Urban forest / tree planting / tree tour event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Queer Ecology Art",
+    "start": "2026-06-21",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Nature Connection: Hidden Forest: Sensory Adventure",
+    "start": "2026-06-28",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Nature Connection: Insect Adventures",
+    "start": "2026-07-12",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Wild and Free Family Yoga",
+    "start": "2026-07-19",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-07-22",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Gerrard/Ashdale",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-07-23",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Weston",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Wild and Free Family Yoga",
+    "start": "2026-08-16",
+    "end": null,
+    "url": "https://downsviewpark.ca/events",
+    "extendedProps": {
+      "location": "Downsview Park",
+      "source": "Downsview Park",
+      "nature_reason": "Outdoor / nature-oriented park event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "NatureTO: Trees Around the Branch Tour",
+    "start": "2026-08-25",
+    "end": null,
+    "url": "https://tpl.bibliocommons.com/v2/events",
+    "extendedProps": {
+      "location": "Thorncliffe",
+      "source": "Toronto Public Library",
+      "nature_reason": "Nature/environment themed public program.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Oasis ZooRun 2026",
+    "start": "2026-09-12",
+    "end": null,
+    "url": "https://www.torontozoo.com/events",
+    "extendedProps": {
+      "location": "Toronto Zoo",
+      "source": "Toronto Zoo",
+      "nature_reason": "Zoo nature/conservation/outdoor event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Corporate Tree Planting - North Maple Regional Park",
+    "start": "2026-09-15",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "North Maple Regional Park",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  },
+  {
+    "title": "Corporate Tree Planting - Aviva Park Drive",
+    "start": "2026-10-13",
+    "end": null,
+    "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/environmental-sustainability-events",
+    "extendedProps": {
+      "location": "Aviva Park Drive",
+      "source": "City of Vaughan",
+      "nature_reason": "Environmental stewardship event.",
+      "teen_reason": "Suitable for teens",
+      "tags": []
+    }
+  }
+]
