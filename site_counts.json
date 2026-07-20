@@ -3,31 +3,31 @@
     "url": "https://trca.ca/events-calendar/",
     "candidate_count": 38,
     "status": "ok",
-    "elapsed_seconds": 52.1
+    "elapsed_seconds": 65.1
   },
   {
     "url": "https://visitvaughan.ca/calendar/",
     "candidate_count": 25,
     "status": "ok",
-    "elapsed_seconds": 65.5
+    "elapsed_seconds": 69.0
   },
   {
     "url": "https://childslife.ca/events/category/kids-programs-and-workshops/nature-wildlife-programs/",
     "candidate_count": 14,
     "status": "partial_timeout",
-    "elapsed_seconds": 90.2
+    "elapsed_seconds": 90.0
   },
   {
     "url": "https://kortright.org/whats-on/calendar/",
     "candidate_count": 13,
     "status": "ok",
-    "elapsed_seconds": 51.5
+    "elapsed_seconds": 43.9
   },
   {
     "url": "https://kortright.org/about-us/volunteer/",
-    "candidate_count": 14,
+    "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 45.3
+    "elapsed_seconds": 5.5
   },
   {
     "url": "https://www.vaughan.ca/about-city-vaughan/departments/environmental-sustainability/green-guardians/community-tree-planting",
@@ -37,9 +37,9 @@
   },
   {
     "url": "https://www.yourleaf.org/events",
-    "candidate_count": 3,
+    "candidate_count": 2,
     "status": "ok",
-    "elapsed_seconds": 12.1
+    "elapsed_seconds": 10.2
   },
   {
     "url": "https://www.vaughan.ca/news/plant-new-roots-your-community",
@@ -55,97 +55,97 @@
   },
   {
     "url": "https://www.evergreen.ca/evergreen-brick-works/whats-on/",
-    "candidate_count": 16,
-    "status": "ok",
-    "elapsed_seconds": 80.5
+    "candidate_count": 13,
+    "status": "partial_timeout",
+    "elapsed_seconds": 90.0
   },
   {
     "url": "https://vaughanpl.info/programs",
     "candidate_count": 3,
     "status": "ok",
-    "elapsed_seconds": 15.0
+    "elapsed_seconds": 14.8
   },
   {
     "url": "https://www.vaughan.ca/residential/recreation-programs-and-fitness/service-registration/youth-week",
     "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 5.3
+    "elapsed_seconds": 5.4
   },
   {
     "url": "https://www.todocanada.ca/city/toronto/events/",
-    "candidate_count": 24,
+    "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 63.9
+    "elapsed_seconds": 5.2
   },
   {
     "url": "https://www.eventbrite.ca/d/canada--york/free--travel-and-outdoor--events/?page=1",
-    "candidate_count": 109,
+    "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 64.7
+    "elapsed_seconds": 3.3
   },
   {
     "url": "https://www.cambridgebutterfly.com/upcoming-events/",
-    "candidate_count": 1,
+    "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 9.3
+    "elapsed_seconds": 3.0
   },
   {
     "url": "https://ontarionature.org/events/annual-gathering/",
     "candidate_count": 2,
     "status": "ok",
-    "elapsed_seconds": 15.0
+    "elapsed_seconds": 14.5
   },
   {
     "url": "https://www.hnpcanada.ca/upcoming-events",
     "candidate_count": 6,
     "status": "ok",
-    "elapsed_seconds": 36.1
+    "elapsed_seconds": 32.8
   },
   {
     "url": "https://hamiltonnature.org/event-calendar/month/2026-04/",
-    "candidate_count": 20,
+    "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 49.5
+    "elapsed_seconds": 3.2
   },
   {
     "url": "https://downsviewpark.ca/events",
-    "candidate_count": 54,
+    "candidate_count": 52,
     "status": "ok",
-    "elapsed_seconds": 59.2
+    "elapsed_seconds": 53.6
   },
   {
     "url": "https://tpl.bibliocommons.com/v2/events/69b2f414491b809c6f1fe7e0",
     "candidate_count": 5,
     "status": "ok",
-    "elapsed_seconds": 32.4
+    "elapsed_seconds": 32.0
   },
   {
     "url": "https://www.toronto.ca/explore-enjoy/parks-recreation/program-activities/arts-hobbies-interests/nature-eco-programs/forestry-talks-tours/forestry-talks-tours-calendar/",
     "candidate_count": 8,
     "status": "ok",
-    "elapsed_seconds": 31.4
+    "elapsed_seconds": 29.5
   },
   {
     "url": "https://www.torontozoo.com/events",
-    "candidate_count": 6,
+    "candidate_count": 9,
     "status": "ok",
-    "elapsed_seconds": 28.1
+    "elapsed_seconds": 47.6
   },
   {
     "url": "https://stellasplace.ca/program-participants/program-directory/",
     "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 8.6
+    "elapsed_seconds": 10.5
   },
   {
     "url": "https://highparknaturecentre.com/nature-clubs-youth/",
-    "candidate_count": 11,
+    "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 38.7
+    "elapsed_seconds": 7.1
   },
   {
     "url": "https://bramlib.libnet.info/event/15927469",
-    "candidate_count": 275,
+    "candidate_count": 233,
     "status": "partial_timeout",
     "elapsed_seconds": 90.0
   },
@@ -153,67 +153,67 @@
     "url": "https://cvc.ca/events/list/",
     "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 2.9
+    "elapsed_seconds": 2.8
   },
   {
     "url": "https://youthhubs.ca/site/maple-youth-wellness-hub",
     "candidate_count": 2,
     "status": "ok",
-    "elapsed_seconds": 9.8
+    "elapsed_seconds": 9.6
   },
   {
     "url": "https://www.vaughanmills.com/events/play-it-forward-for-mental-health/",
     "candidate_count": 3,
     "status": "ok",
-    "elapsed_seconds": 15.4
+    "elapsed_seconds": 16.8
   },
   {
     "url": "https://www.mackenziehealth.ca/support-us/foundation/events/community-events",
     "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 7.9
+    "elapsed_seconds": 7.7
   },
   {
     "url": "https://downsviewpark.ca/events/earth-day-downsview-park",
     "candidate_count": 2,
     "status": "ok",
-    "elapsed_seconds": 19.5
+    "elapsed_seconds": 18.7
   },
   {
     "url": "https://www.scarbenv.ca",
     "candidate_count": 18,
-    "status": "partial_timeout",
-    "elapsed_seconds": 90.1
+    "status": "ok",
+    "elapsed_seconds": 74.9
   },
   {
     "url": "https://torontofieldnaturalists.org",
     "candidate_count": 1,
     "status": "ok",
-    "elapsed_seconds": 12.0
+    "elapsed_seconds": 11.4
   },
   {
     "url": "https://www.toronto.ca/explore-enjoy/parks-recreation/places-spaces/parks-and-recreation-facilities/",
     "candidate_count": 23,
     "status": "ok",
-    "elapsed_seconds": 72.2
+    "elapsed_seconds": 67.6
   },
   {
     "url": "https://stridestoronto.ca/program-service/whats-up-walk-in/",
     "candidate_count": 3,
     "status": "ok",
-    "elapsed_seconds": 16.3
+    "elapsed_seconds": 17.4
   },
   {
     "url": "https://www.eventbrite.ca/d/canada--vaughan/events/",
-    "candidate_count": 108,
+    "candidate_count": 0,
     "status": "ok",
-    "elapsed_seconds": 63.2
+    "elapsed_seconds": 3.2
   },
   {
     "url": "https://www.vaughanpl.info/events_calendars/calendar",
     "candidate_count": 34,
     "status": "partial_timeout",
-    "elapsed_seconds": 90.0
+    "elapsed_seconds": 90.1
   },
   {
     "url": "https://www.vaughan.ca/upcoming-events",
@@ -223,20 +223,20 @@
   },
   {
     "url": "https://vaughanbusiness.ca/events/",
-    "candidate_count": 30,
+    "candidate_count": 29,
     "status": "ok",
-    "elapsed_seconds": 62.4
+    "elapsed_seconds": 64.4
   },
   {
     "url": "https://assemblypark.ca/events/",
     "candidate_count": 21,
     "status": "ok",
-    "elapsed_seconds": 52.0
+    "elapsed_seconds": 48.2
   },
   {
     "url": "https://www.meetup.com/find/ca--on--vaughan/",
-    "candidate_count": 4,
+    "candidate_count": 6,
     "status": "ok",
-    "elapsed_seconds": 53.2
+    "elapsed_seconds": 68.3
   }
 ]
